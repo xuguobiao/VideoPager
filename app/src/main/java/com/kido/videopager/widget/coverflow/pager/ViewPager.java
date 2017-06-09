@@ -52,7 +52,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Framework copy of the support-v4 ViewPager class.
+ *  copy of the support-v4 ViewPager class.
  */
 public class ViewPager extends ViewGroup {
     private static final String TAG = "ViewPager";

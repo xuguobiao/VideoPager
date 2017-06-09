@@ -23,57 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Base class providing the adapter to populate pages inside of
- * a {@link android.support.v4.view.ViewPager}.  You will most likely want to use a more
- * specific implementation of this, such as
- * {@link android.support.v4.app.FragmentPagerAdapter} or
- * {@link android.support.v4.app.FragmentStatePagerAdapter}.
- * <p>
- * <p>When you implement a PagerAdapter, you must override the following methods
- * at minimum:</p>
- * <ul>
- * <li>{@link #instantiateItem(android.view.ViewGroup, int)}</li>
- * <li>{@link #destroyItem(android.view.ViewGroup, int, Object)}</li>
- * <li>{@link #getCount()}</li>
- * <li>{@link #isViewFromObject(android.view.View, Object)}</li>
- * </ul>
- * <p>
- * <p>PagerAdapter is more general than the adapters used for
- * {@link android.widget.AdapterView AdapterViews}. Instead of providing a
- * View recycling mechanism directly ViewPager uses callbacks to indicate the
- * steps taken during an update. A PagerAdapter may implement a form of View
- * recycling if desired or use a more sophisticated method of managing page
- * Views such as Fragment transactions where each page is represented by its
- * own Fragment.</p>
- * <p>
- * <p>ViewPager associates each page with a key Object instead of working with
- * Views directly. This key is used to track and uniquely identify a given page
- * independent of its position in the adapter. A call to the PagerAdapter method
- * {@link #startUpdate(android.view.ViewGroup)} indicates that the contents of the ViewPager
- * are about to change. One or more calls to {@link #instantiateItem(android.view.ViewGroup, int)}
- * and/or {@link #destroyItem(android.view.ViewGroup, int, Object)} will follow, and the end
- * of an update will be signaled by a call to {@link #finishUpdate(android.view.ViewGroup)}.
- * By the time {@link #finishUpdate(android.view.ViewGroup) finishUpdate} returns the views
- * associated with the key objects returned by
- * {@link #instantiateItem(android.view.ViewGroup, int) instantiateItem} should be added to
- * the parent ViewGroup passed to these methods and the views associated with
- * the keys passed to {@link #destroyItem(android.view.ViewGroup, int, Object) destroyItem}
- * should be removed. The method {@link #isViewFromObject(android.view.View, Object)} identifies
- * whether a page View is associated with a given key object.</p>
- * <p>
- * <p>A very simple PagerAdapter may choose to use the page Views themselves
- * as key objects, returning them from {@link #instantiateItem(android.view.ViewGroup, int)}
- * after creation and adding them to the parent ViewGroup. A matching
- * {@link #destroyItem(android.view.ViewGroup, int, Object)} implementation would remove the
- * View from the parent ViewGroup and {@link #isViewFromObject(android.view.View, Object)}
- * could be implemented as <code>return view == object;</code>.</p>
- * <p>
- * <p>PagerAdapter supports data set changes. Data set changes must occur on the
- * main thread and must end with a call to {@link #notifyDataSetChanged()} similar
- * to AdapterView adapters derived from {@link android.widget.BaseAdapter}. A data
- * set change may involve pages being added, removed, or changing position. The
- * ViewPager will keep the current page active provided the adapter implements
- * the method {@link #getItemPosition(Object)}.</p>
+ *  copy of the support-v4 ViewPager PagerAdapter class.
  */
 public abstract class PagerAdapter {
     private DataSetObservable mObservable = new DataSetObservable();
