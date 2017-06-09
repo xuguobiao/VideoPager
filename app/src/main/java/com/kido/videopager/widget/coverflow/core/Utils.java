@@ -1,6 +1,5 @@
 package com.kido.videopager.widget.coverflow.core;
 
-import android.content.Context;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
@@ -32,23 +31,21 @@ public class Utils {
     }
 
     /**
-     * 将ViewPager滑动动画的时间*durationRate
-     *
-     * @param context
-     * @param viewPager
-     * @param durationRate 滑动时间影响因子
+     * y = beta * x + alpha
+     * <p>
+     * destDuration = oriDuration * beta + alpha
      */
-    public static void setViewPagerScroller(Context context, ViewPager viewPager, final float durationRate) {
+    public static void setViewPagerScroller(ViewPager viewPager, final float beta, final float alpha) {
         try {
             Field scrollerField = ViewPager.class.getDeclaredField("mScroller");
             scrollerField.setAccessible(true);
             Field interpolator = ViewPager.class.getDeclaredField("sInterpolator");
             interpolator.setAccessible(true);
 
-            Scroller scroller = new Scroller(context, (Interpolator) interpolator.get(null)) {
+            Scroller scroller = new Scroller(viewPager.getContext(), (Interpolator) interpolator.get(null)) {
                 @Override
                 public void startScroll(int startX, int startY, int dx, int dy, int duration) {
-                    super.startScroll(startX, startY, dx, dy, (int) (duration * durationRate));
+                    super.startScroll(startX, startY, dx, dy, (int) (duration * beta + alpha));
                 }
             };
             scrollerField.set(viewPager, scroller);

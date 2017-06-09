@@ -22,7 +22,8 @@ import com.kido.videopager.widget.coverflow.util.ViewCompat;
  */
 public class PagerContainer extends FrameLayout implements ViewPager.OnPageChangeListener {
 
-    private final static float DURATION_SLIDE_RATE = 1.5f;
+    private final static float DURATION_FACTOR_BETA = 1.5f;
+    private final static float DURATION_FACTOR_ALPHA = 0f;
     private ViewPager mPager;
     boolean mNeedsRedraw = false;
     boolean isOverlapEnabled = false;
@@ -64,7 +65,7 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
             mPager.setClipChildren(false);
             mPager.setOverScrollMode(OVER_SCROLL_NEVER);
             mPager.addOnPageChangeListener(this);
-            Utils.setViewPagerScroller(getContext(), mPager, DURATION_SLIDE_RATE);
+            Utils.setViewPagerScroller(mPager, DURATION_FACTOR_BETA, DURATION_FACTOR_ALPHA);
         } catch (Exception e) {
             throw new IllegalStateException("The root child of PagerContainer must be a ViewPager");
         }
