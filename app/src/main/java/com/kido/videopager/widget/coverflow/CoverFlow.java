@@ -7,17 +7,16 @@ import com.kido.videopager.widget.coverflow.pager.ViewPager;
 /**
  * 参考crosswall/Android-Coverflow，使用ViewPager实现CoverFlow效果。（ViewPager不使用support包相关，直接copy源码修改。）
  *
- * @see(<a href = "https://github.com/crosswall/Android-Coverflow"></>)
- *
  * @author Kido
+ * @see(<a href = "https://github.com/crosswall/Android-Coverflow"></>)
  */
 public class CoverFlow {
 
-  //  public static final float DEFAULT_SCALE_VALUE  = 0.3f;
+    //  public static final float DEFAULT_SCALE_VALUE  = 0.3f;
 
-  //  public static final float DEFAULT_PAGER_MARGIN = 0f;
+    //  public static final float DEFAULT_PAGER_MARGIN = 0f;
 
- //   public static final float DEFAULT_SPACE_SIZE   = 0f;
+    //   public static final float DEFAULT_SPACE_SIZE   = 0f;
 
     private final ViewPager viewPager;
     private final float scaleValue;
@@ -25,23 +24,22 @@ public class CoverFlow {
     private final float spaceSize;
     private final float rotationY;
 
-    public CoverFlow(CoverFlow.Builder builder){
+    public CoverFlow(CoverFlow.Builder builder) {
 
-        if(null==builder){
+        if (null == builder) {
             throw new IllegalArgumentException("A non-null CoverFlow.Builde must be provided");
         }
 
         this.viewPager = builder.viewPager;
-        this.scaleValue  = builder.scaleValue;
+        this.scaleValue = builder.scaleValue;
         this.pagerMargin = builder.pagerMargin;
-        this.spaceSize   = builder.spaceSize;
-        this.rotationY   = builder.rotationY;
+        this.spaceSize = builder.spaceSize;
+        this.rotationY = builder.rotationY;
 
-        if(this.viewPager != null){
+        if (this.viewPager != null) {
             this.viewPager.setPageTransformer(false,
-                    new CoverTransformer(this.scaleValue,this.pagerMargin,this.spaceSize,this.rotationY));
+                    new CoverTransformer(this.scaleValue, this.pagerMargin, this.spaceSize, this.rotationY));
         }
-
 
     }
 
@@ -72,14 +70,13 @@ public class CoverFlow {
             return this;
         }
 
-        public CoverFlow.Builder rotationY(float rotationY){
+        public CoverFlow.Builder rotationY(float rotationY) {
             this.rotationY = rotationY;
             return this;
         }
 
         public CoverFlow build() {
             return new CoverFlow(this);
-
         }
     }
 }

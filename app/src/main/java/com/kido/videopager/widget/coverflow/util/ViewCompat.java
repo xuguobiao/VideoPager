@@ -125,10 +125,10 @@ public class ViewCompat {
     }
 
     public static void setElevation(View view, float elevation) {
-         IMPL.setElevation(view, elevation);
+        IMPL.setElevation(view, elevation);
     }
 
-    public static int getLayoutDirection(View view){
+    public static int getLayoutDirection(View view) {
         return IMPL.getLayoutDirection(view);
     }
 
