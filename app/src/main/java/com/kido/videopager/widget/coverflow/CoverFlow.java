@@ -4,6 +4,9 @@ package com.kido.videopager.widget.coverflow;
 import com.kido.videopager.widget.coverflow.core.CoverTransformer;
 import com.kido.videopager.widget.coverflow.pager.ViewPager;
 
+/**
+ * 使用ViewPager实现CoverFlow效果。（ViewPager不使用support包相关，直接copy源码修改。）
+ */
 public class CoverFlow {
 
   //  public static final float DEFAULT_SCALE_VALUE  = 0.3f;

@@ -8,7 +8,6 @@ import android.view.View;
  * @author Kido
  */
 
-
 public class ViewCompat {
     /**
      * Horizontal layout direction of this view is from Left to Right.

@@ -6,6 +6,8 @@ import android.view.View;
 import com.kido.videopager.widget.coverflow.pager.ViewPager;
 
 /**
+ * 定义ViewPager滑动过程中的变化
+ *
  * @author Kido
  */
 public class CoverTransformer implements ViewPager.PageTransformer {

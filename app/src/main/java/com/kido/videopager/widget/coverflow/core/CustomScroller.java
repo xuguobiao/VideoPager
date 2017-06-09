@@ -6,6 +6,8 @@ import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
 /**
+ * 定义ViewPager如何滑动
+ *
  * @author Kido
  */
 public class CustomScroller extends Scroller {
