@@ -44,7 +44,7 @@ import android.widget.EdgeEffect;
 import android.widget.Scroller;
 
 import com.kido.videopager.widget.coverflow.util.MathUtils;
-import com.kido.videopager.widget.coverflow.util.ViewHelper;
+import com.kido.videopager.widget.coverflow.util.ViewCompat;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -562,7 +562,7 @@ public class ViewPager extends ViewGroup {
         final int scaledOffset = (int) (width * MathUtils.constrain(
                 info.offset, mFirstOffset, mLastOffset));
 
-        if (ViewHelper.isLayoutRtl(this)) {
+        if (isLayoutRtl()) {
             final int itemWidth = (int) (width * info.widthFactor + 0.5f);
             return MAX_SCROLL_X - itemWidth - scaledOffset;
         } else {
@@ -831,7 +831,7 @@ public class ViewPager extends ViewGroup {
         duration = Math.min(duration, MAX_SETTLE_DURATION);
 
         mScroller.startScroll(sx, sy, dx, dy, duration);
-        ViewHelper.postInvalidateOnAnimation(this);
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
     ItemInfo addNewItem(int position, int index) {
@@ -1623,7 +1623,7 @@ public class ViewPager extends ViewGroup {
             final int childMeasuredWidth = child.getMeasuredWidth();
             final int startOffset = (int) (childWidth * ii.offset);
             final int childLeft;
-            if (ViewHelper.isLayoutRtl(this)) {
+            if (isLayoutRtl()) {
                 childLeft = MAX_SCROLL_X - paddingRight - startOffset - childMeasuredWidth;
             } else {
                 childLeft = paddingLeft + startOffset;
@@ -1662,7 +1662,7 @@ public class ViewPager extends ViewGroup {
             }
 
             // Keep on drawing until the animation has finished.
-            ViewHelper.postInvalidateOnAnimation(this);
+            ViewCompat.postInvalidateOnAnimation(this);
             return;
         }
 
@@ -1683,7 +1683,7 @@ public class ViewPager extends ViewGroup {
 
         // Translate to scrollX to scrollStart for RTL.
         final int scrollStart;
-        if (ViewHelper.isLayoutRtl(this)) {
+        if (isLayoutRtl()) {
             scrollStart = MAX_SCROLL_X - scrollX;
         } else {
             scrollStart = scrollX;
@@ -1855,7 +1855,7 @@ public class ViewPager extends ViewGroup {
         }
         if (needPopulate) {
             if (postEvents) {
-                ViewHelper.postOnAnimation(this, mEndScrollRunnable);
+                ViewCompat.postOnAnimation(this, mEndScrollRunnable);
             } else {
                 mEndScrollRunnable.run();
             }
@@ -1964,7 +1964,7 @@ public class ViewPager extends ViewGroup {
                 if (mIsBeingDragged) {
                     // Scroll to follow the motion event
                     if (performDrag(x)) {
-                        ViewHelper.postInvalidateOnAnimation(this);
+                        ViewCompat.postInvalidateOnAnimation(this);
                     }
                 }
                 break;
@@ -2098,7 +2098,7 @@ public class ViewPager extends ViewGroup {
                     final ItemInfo ii = infoForFirstVisiblePage();
                     final int currentPage = ii.position;
                     final float nextPageOffset;
-                    if (ViewHelper.isLayoutRtl(this)) {
+                    if (isLayoutRtl()) {
                         nextPageOffset = (ii.offset - scrolledPages) / ii.widthFactor;
                     } else {
                         nextPageOffset = (scrolledPages - ii.offset) / ii.widthFactor;
@@ -2141,7 +2141,7 @@ public class ViewPager extends ViewGroup {
                 break;
         }
         if (needsInvalidate) {
-            ViewHelper.postInvalidateOnAnimation(this);
+            ViewCompat.postInvalidateOnAnimation(this);
         }
         return true;
     }
@@ -2162,7 +2162,7 @@ public class ViewPager extends ViewGroup {
 
         final EdgeEffect startEdge;
         final EdgeEffect endEdge;
-        if (ViewHelper.isLayoutRtl(this)) {
+        if (isLayoutRtl()) {
             startEdge = mRightEdge;
             endEdge = mLeftEdge;
         } else {
@@ -2173,7 +2173,7 @@ public class ViewPager extends ViewGroup {
         // Translate scroll to relative coordinates.
         final float nextScrollX = getScrollX() + deltaX;
         final float scrollStart;
-        if (ViewHelper.isLayoutRtl(this)) {
+        if (isLayoutRtl()) {
             scrollStart = MAX_SCROLL_X - nextScrollX;
         } else {
             scrollStart = nextScrollX;
@@ -2218,7 +2218,7 @@ public class ViewPager extends ViewGroup {
 
         // Translate back to absolute coordinates.
         final float targetScrollX;
-        if (ViewHelper.isLayoutRtl(this)) {
+        if (isLayoutRtl()) {
             targetScrollX = MAX_SCROLL_X - clampedScrollStart;
         } else {
             targetScrollX = clampedScrollStart;
@@ -2285,7 +2285,7 @@ public class ViewPager extends ViewGroup {
     }
 
     private int getScrollStart() {
-        if (ViewHelper.isLayoutRtl(this)) {
+        if (isLayoutRtl()) {
             return MAX_SCROLL_X - getScrollX();
         } else {
             return getScrollX();
@@ -2357,7 +2357,7 @@ public class ViewPager extends ViewGroup {
 
         if (needsInvalidate) {
             // Keep animating
-            ViewHelper.postInvalidateOnAnimation(this);
+            ViewCompat.postInvalidateOnAnimation(this);
         }
     }
 
@@ -2395,7 +2395,7 @@ public class ViewPager extends ViewGroup {
 
                 final float left;
                 final float scaledOffset = itemOffset * width;
-                if (ViewHelper.isLayoutRtl(this)) {
+                if (isLayoutRtl()) {
                     left = MAX_SCROLL_X - scaledOffset;
                 } else {
                     left = scaledOffset + widthFactor * width;
@@ -2846,5 +2846,9 @@ public class ViewPager extends ViewGroup {
             }
             return llp.position - rlp.position;
         }
+    }
+
+    private boolean isLayoutRtl(){
+        return ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
     }
 }

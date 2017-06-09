@@ -11,8 +11,6 @@ import com.kido.videopager.widget.coverflow.pager.ViewPager;
 
 public class MainActivity extends Activity {
 
-    private ViewPager viewPager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,13 +20,13 @@ public class MainActivity extends Activity {
 
     private void bindViews() {
         PagerContainer mContainer = (PagerContainer) findViewById(R.id.pager_container);
+//        mContainer.setOverlapEnabled(true);
 
         final ViewPager pager = mContainer.getViewPager();
 
         PagerAdapter adapter = new VideoPagerAdapter(this, VIDEO_THUMBS);
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(adapter.getCount());
-        pager.setClipChildren(false);
 
         new CoverFlow.Builder()
                 .with(pager)

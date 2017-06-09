@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.kido.videopager.widget.coverflow.pager.ViewPager;
-import com.kido.videopager.widget.coverflow.util.ViewHelper;
+import com.kido.videopager.widget.coverflow.util.ViewCompat;
 
 /**
  * PagerContainer: A layout that displays a ViewPager with its children that are outside
@@ -169,16 +169,16 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
                     if (object instanceof Fragment) {
                         Fragment fragment = (Fragment) object;
                         if (loopCounter == position) {
-                            ViewHelper.setElevation(fragment.getView(), 8.0f);
+                            ViewCompat.setElevation(fragment.getView(), 8.0f);
                         } else {
-                            ViewHelper.setElevation(fragment.getView(), 0.0f);
+                            ViewCompat.setElevation(fragment.getView(), 0.0f);
                         }
                     } else {
                         ViewGroup view = (ViewGroup) object;
                         if (loopCounter == position) {
-                            ViewHelper.setElevation(view, 8.0f);
+                            ViewCompat.setElevation(view, 8.0f);
                         } else {
-                            ViewHelper.setElevation(view, 0.0f);
+                            ViewCompat.setElevation(view, 0.0f);
                         }
                     }
                 }
