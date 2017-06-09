@@ -38,6 +38,8 @@ import java.util.List;
 
 /**
  * copy of the support-v4 ViewPager class. ( min api = 14 )
+ *
+ * @author Kido
  */
 public class ViewPager extends ViewGroup {
     private static final String TAG = "ViewPager";

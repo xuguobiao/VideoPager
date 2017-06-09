@@ -5,7 +5,11 @@ import com.kido.videopager.widget.coverflow.core.CoverTransformer;
 import com.kido.videopager.widget.coverflow.pager.ViewPager;
 
 /**
- * 使用ViewPager实现CoverFlow效果。（ViewPager不使用support包相关，直接copy源码修改。）
+ * 参考crosswall/Android-Coverflow，使用ViewPager实现CoverFlow效果。（ViewPager不使用support包相关，直接copy源码修改。）
+ *
+ * @see(<a href = "https://github.com/crosswall/Android-Coverflow"></>)
+ *
+ * @author Kido
  */
 public class CoverFlow {
 

@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 /**
  * copy of the support-v4 ViewPager PagerAdapter class.
+ *
+ * @author Kido
  */
 public abstract class PagerAdapter {
     private DataSetObservable mObservable = new DataSetObservable();

@@ -18,15 +18,14 @@ import com.kido.videopager.widget.coverflow.util.ViewCompat;
  * the typical pager bounds.
  *
  * @see(<a href = "https://gist.github.com/devunwired/8cbe094bb7a783e37ad1"></>)
+ *
+ *  @author Kido
  */
 public class PagerContainer extends FrameLayout implements ViewPager.OnPageChangeListener {
 
     private ViewPager mPager;
     boolean mNeedsRedraw = false;
     boolean isOverlapEnabled = false;
-    private PageItemClickListener pageItemClickListener;
-
-    private boolean mReadyToTriggerClick = false;
 
     public PagerContainer(Context context) {
         super(context);
@@ -57,10 +56,6 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
         isOverlapEnabled = overlapEnabled;
     }
 
-//    public void setPageItemClickListener(PageItemClickListener pageItemClickListener) {
-//        this.pageItemClickListener = pageItemClickListener;
-//    }
-
     @SuppressLint("MissingSuperCall")
     @Override
     protected void onFinishInflate() {
@@ -87,30 +82,6 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
         mCenter.y = h / 2;
     }
 
-//    @Override
-//    public boolean onInterceptTouchEvent(MotionEvent ev) {
-//        switch (ev.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//                mInitialTouch.x = (int) ev.getX();
-//                mInitialTouch.y = (int) ev.getY();
-//                mReadyToTriggerClick = true;
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//                mReadyToTriggerClick = false;
-//                break;
-//            case MotionEvent.ACTION_UP:
-//                int delta = Utils.isInNonTappableRegion(getWidth(), mPager.getWidth(), mInitialTouch.x, ev.getX());
-//                if (delta == 0) {
-//                    if (mReadyToTriggerClick && pageItemClickListener != null) {
-//                        int currentItem = mPager.getCurrentItem();
-//                        pageItemClickListener.onItemClick(mPager.getChildAt(currentItem), currentItem);
-//                    }
-//                }
-//                mReadyToTriggerClick = false;
-//                break;
-//        }
-//        return super.onInterceptTouchEvent(ev);
-//    }
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
@@ -131,9 +102,6 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
                     int currentItem = preItem + delta;
                     mPager.setCurrentItem(currentItem, true);
 //                    ev.offsetLocation(mCenter.x - mInitialTouch.x, mCenter.y - mInitialTouch.y);
-//                    if (pageItemClickListener != null) {
-//                        pageItemClickListener.onItemClick(mPager.getChildAt(currentItem), currentItem);
-//                    }
                 }
                 break;
         }
