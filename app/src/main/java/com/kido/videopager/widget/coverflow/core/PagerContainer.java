@@ -17,12 +17,12 @@ import com.kido.videopager.widget.coverflow.util.ViewCompat;
  * PagerContainer: A layout that displays a ViewPager with its children that are outside
  * the typical pager bounds.
  *
+ * @author Kido
  * @see(<a href = "https://gist.github.com/devunwired/8cbe094bb7a783e37ad1"></>)
- *
- *  @author Kido
  */
 public class PagerContainer extends FrameLayout implements ViewPager.OnPageChangeListener {
 
+    private final static float DURATION_SLIDE_RATE = 1.5f;
     private ViewPager mPager;
     boolean mNeedsRedraw = false;
     boolean isOverlapEnabled = false;
@@ -64,6 +64,7 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
             mPager.setClipChildren(false);
             mPager.setOverScrollMode(OVER_SCROLL_NEVER);
             mPager.addOnPageChangeListener(this);
+            Utils.setViewPagerScroller(getContext(), mPager, DURATION_SLIDE_RATE);
         } catch (Exception e) {
             throw new IllegalStateException("The root child of PagerContainer must be a ViewPager");
         }
