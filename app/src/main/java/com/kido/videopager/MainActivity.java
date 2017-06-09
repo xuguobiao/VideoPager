@@ -2,12 +2,9 @@ package com.kido.videopager;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
 
 import com.kido.videopager.adapter.VideoPagerAdapter;
 import com.kido.videopager.widget.coverflow.CoverFlow;
-import com.kido.videopager.widget.coverflow.core.PageItemClickListener;
 import com.kido.videopager.widget.coverflow.core.PagerContainer;
 import com.kido.videopager.widget.coverflow.pager.PagerAdapter;
 import com.kido.videopager.widget.coverflow.pager.ViewPager;
@@ -30,18 +27,8 @@ public class MainActivity extends Activity {
 
         PagerAdapter adapter = new VideoPagerAdapter(this, VIDEO_THUMBS);
         pager.setAdapter(adapter);
-
         pager.setOffscreenPageLimit(adapter.getCount());
-
         pager.setClipChildren(false);
-
-        mContainer.setPageItemClickListener(new PageItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(MainActivity.this, "position:" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-
 
         new CoverFlow.Builder()
                 .with(pager)

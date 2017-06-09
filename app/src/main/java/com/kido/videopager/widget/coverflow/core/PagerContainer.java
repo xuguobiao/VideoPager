@@ -26,6 +26,8 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
     boolean isOverlapEnabled = false;
     private PageItemClickListener pageItemClickListener;
 
+    private boolean mReadyToTriggerClick = false;
+
     public PagerContainer(Context context) {
         super(context);
         init();
@@ -55,15 +57,17 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
         isOverlapEnabled = overlapEnabled;
     }
 
-    public void setPageItemClickListener(PageItemClickListener pageItemClickListener) {
-        this.pageItemClickListener = pageItemClickListener;
-    }
+//    public void setPageItemClickListener(PageItemClickListener pageItemClickListener) {
+//        this.pageItemClickListener = pageItemClickListener;
+//    }
 
     @SuppressLint("MissingSuperCall")
     @Override
     protected void onFinishInflate() {
         try {
             mPager = (ViewPager) getChildAt(0);
+            mPager.setClipChildren(false);
+            mPager.setOverScrollMode(OVER_SCROLL_NEVER);
             mPager.addOnPageChangeListener(this);
         } catch (Exception e) {
             throw new IllegalStateException("The root child of PagerContainer must be a ViewPager");
@@ -83,6 +87,31 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
         mCenter.y = h / 2;
     }
 
+//    @Override
+//    public boolean onInterceptTouchEvent(MotionEvent ev) {
+//        switch (ev.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                mInitialTouch.x = (int) ev.getX();
+//                mInitialTouch.y = (int) ev.getY();
+//                mReadyToTriggerClick = true;
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                mReadyToTriggerClick = false;
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                int delta = Utils.isInNonTappableRegion(getWidth(), mPager.getWidth(), mInitialTouch.x, ev.getX());
+//                if (delta == 0) {
+//                    if (mReadyToTriggerClick && pageItemClickListener != null) {
+//                        int currentItem = mPager.getCurrentItem();
+//                        pageItemClickListener.onItemClick(mPager.getChildAt(currentItem), currentItem);
+//                    }
+//                }
+//                mReadyToTriggerClick = false;
+//                break;
+//        }
+//        return super.onInterceptTouchEvent(ev);
+//    }
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         //We capture any touches not already handled by the ViewPager
@@ -93,12 +122,14 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
                 mInitialTouch.y = (int) ev.getY();
 //                ev.offsetLocation(mCenter.x - mInitialTouch.x, mCenter.y - mInitialTouch.y);
                 break;
+            case MotionEvent.ACTION_MOVE:
+                break;
             case MotionEvent.ACTION_UP:
                 int delta = Utils.isInNonTappableRegion(getWidth(), mPager.getWidth(), mInitialTouch.x, ev.getX());
                 if (delta != 0) {
                     int preItem = mPager.getCurrentItem();
                     int currentItem = preItem + delta;
-//                    mPager.setCurrentItem(currentItem, true);
+                    mPager.setCurrentItem(currentItem, true);
 //                    ev.offsetLocation(mCenter.x - mInitialTouch.x, mCenter.y - mInitialTouch.y);
 //                    if (pageItemClickListener != null) {
 //                        pageItemClickListener.onItemClick(mPager.getChildAt(currentItem), currentItem);
