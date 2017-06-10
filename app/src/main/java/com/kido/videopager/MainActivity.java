@@ -37,9 +37,10 @@ public class MainActivity extends Activity {
 //        pager.setPageMargin();
 
         mCoverFlowLayout.config(new CoverFlowLayout.Builder()
-                .scale(0.2f)
-                .pagerMargin(getResources().getDimensionPixelSize(R.dimen.pager_margin_1))
-                .spaceSize(0f)
+//                .scale(0.2f)
+//                .pagerMargin(getResources().getDimensionPixelSize(R.dimen.pager_margin_1))
+//                .spaceSize(0f)
+                .addChildTransformer(new VideoPagerAdapter.VideoPagerTransformer())
                 .build()
         );
 

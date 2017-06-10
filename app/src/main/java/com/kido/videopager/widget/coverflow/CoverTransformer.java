@@ -3,6 +3,7 @@ package com.kido.videopager.widget.coverflow;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.kido.videopager.adapter.VideoPagerAdapter;
 import com.kido.videopager.utils.Logger;
 
 import java.util.List;
@@ -45,7 +46,6 @@ class CoverTransformer implements ViewPager.PageTransformer {
     public void transformPage(View page, float position) {
 
         Logger.d(TAG, "page=%s, position=%s", page.hashCode(), position);
-
 
         if (rotationY != 0) {
             float realRotationY = Math.min(rotationY, Math.abs(position * rotationY));

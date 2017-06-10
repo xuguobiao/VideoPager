@@ -7,14 +7,13 @@
     <com.kido.videopager.widget.coverflow.CoverFlowLayout
         android:id="@+id/cover_flow_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#f0f0f0">
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content">
 
         <android.support.v4.view.ViewPager
             android:layout_width="300dp"
-            android:layout_height="450dp"
-            android:layout_gravity="center"
-            android:background="#ffff00" />
+            android:layout_height="380dp"
+            android:layout_gravity="center" />
 
     </com.kido.videopager.widget.coverflow.CoverFlowLayout>
 

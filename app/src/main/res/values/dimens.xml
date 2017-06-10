@@ -16,5 +16,12 @@
 
     <dimen name="card_corner_radius">8dp</dimen>
 
+    <dimen name="card_below_top_margin_ver">10dp</dimen>
+    <dimen name="card_below_top_margin_hor">-50dp</dimen>
+
+    <dimen name="card_image_width">300dp</dimen>
+    <dimen name="card_image_height_ver">300dp</dimen>
+    <dimen name="card_image_height_hor">170dp</dimen>
+
 
 </resources>
