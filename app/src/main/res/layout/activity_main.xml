@@ -1,26 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <com.kido.videopager.widget.coverflow.CoverFlowLayout
-        android:id="@+id/pager_container"
+        android:id="@+id/cover_flow_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:background="#f0f0f0"
+        android:layout_height="350dp">
 
         <android.support.v4.view.ViewPager
-            android:layout_marginTop="20dp"
             android:layout_width="300dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal" />
+            android:layout_height="300dp"
+            android:background="#ffff00"
+            android:layout_gravity="center" />
 
     </com.kido.videopager.widget.coverflow.CoverFlowLayout>
+
+
+    <LinearLayout
+        android:id="@+id/below_layout"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cover_flow_layout"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:lineSpacingExtra="2dp"
+            android:maxLines="2"
+            android:text="This is title.\nThis is the title."
+            android:textColor="#000000"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#f0f0f0" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/ic_launcher" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -40,4 +80,4 @@
     </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 阴影部分 -->
+    <!--<item>-->
+        <!--&lt;!&ndash; show rectangle area &ndash;&gt;-->
+        <!--<shape android:shape="rectangle">-->
+            <!--<gradient-->
+                <!--android:angle="270"-->
+                <!--android:centerColor="#000000"-->
+                <!--android:endColor="#FFFFFF"-->
+                <!--android:startColor="#FFFFFF" />-->
+        <!--</shape>-->
+    <!--</item>-->
+
+    <!-- 背景部分 -->
+    <item android:bottom="0dp">
+
+        <shape android:shape="rectangle">
+            <solid android:color="#dd000000" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+
+</layer-list>

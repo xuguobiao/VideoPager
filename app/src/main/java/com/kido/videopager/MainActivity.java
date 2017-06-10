@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
     }
 
     private void bindViews() {
-        mCoverFlowLayout = (CoverFlowLayout) findViewById(R.id.pager_container);
+        mCoverFlowLayout = (CoverFlowLayout) findViewById(R.id.cover_flow_layout);
 //        mCoverFlowLayout.setOverlapEnabled(true);
 
         final ViewPager pager = mCoverFlowLayout.getViewPager();

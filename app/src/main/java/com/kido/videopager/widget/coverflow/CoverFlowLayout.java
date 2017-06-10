@@ -24,6 +24,8 @@ public class CoverFlowLayout extends FrameLayout implements ViewPager.OnPageChan
 
     private final static float DURATION_FACTOR_BETA = 1.5f;
     private final static float DURATION_FACTOR_ALPHA = 0f;
+    private final static float DURATION_MIN = 800f;
+    private final static float DURATION_MAX = 2000f;
     private ViewPager mPager;
     boolean mNeedsRedraw = false;
     boolean isOverlapEnabled = false;
@@ -257,7 +259,7 @@ public class CoverFlowLayout extends FrameLayout implements ViewPager.OnPageChan
             Scroller scroller = new Scroller(viewPager.getContext(), (Interpolator) interpolator.get(null)) {
                 @Override
                 public void startScroll(int startX, int startY, int dx, int dy, int duration) {
-                    super.startScroll(startX, startY, dx, dy, (int) (duration * beta + alpha));
+                    super.startScroll(startX, startY, dx, dy, (int) getFloat(duration * beta + alpha, DURATION_MIN, DURATION_MAX));
                 }
             };
             scrollerField.set(viewPager, scroller);
@@ -266,6 +268,10 @@ public class CoverFlowLayout extends FrameLayout implements ViewPager.OnPageChan
         } catch (IllegalAccessException e) {
             // Do nothing.
         }
+    }
+
+    private static float getFloat(float value, float minValue, float maxValue) {
+        return Math.min(maxValue, Math.max(minValue, value));
     }
 
 }

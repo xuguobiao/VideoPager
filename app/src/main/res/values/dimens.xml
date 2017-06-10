@@ -14,4 +14,6 @@
 
     <dimen name="overlap_pager_margin">-60dp</dimen>
 
+    <dimen name="card_corner_radius">8dp</dimen>
+
 </resources>

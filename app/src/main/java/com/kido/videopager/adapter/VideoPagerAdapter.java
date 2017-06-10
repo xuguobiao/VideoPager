@@ -5,11 +5,11 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.kido.videopager.R;
 import com.kido.videopager.VideoData;
 import com.kido.videopager.widget.coverflow.CoverFlowLayout;
+import com.kido.videopager.widget.roundedimageview.RoundedImageView;
 
 import java.util.List;
 
@@ -32,9 +32,15 @@ public class VideoPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         VideoData data = datas.get(position);
-        int layoutId = data.height >= data.width ? R.layout.item_page_ver : R.layout.item_page_hor;
-        View view = mInflater.inflate(layoutId, null);
-        ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
+        View view = mInflater.inflate(R.layout.item_page, null);
+        RoundedImageView imageView = (RoundedImageView) view.findViewById(R.id.imageView);
+        if (data.height >= data.width) {
+            imageView.setBackground(mContext.getResources().getDrawable(R.drawable.bg_black_corner));
+            imageView.setCornerRadius(0);
+        } else {
+            imageView.setBackground(null);
+            imageView.setCornerRadius(mContext.getResources().getDimensionPixelSize(R.dimen.card_corner_radius));
+        }
         imageView.setImageResource(data.videoThumb);
 //        TextView title = (TextView) view.findViewById(R.id.title);
 //        title.setText(data.title);
