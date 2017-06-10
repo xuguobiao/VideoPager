@@ -1,5 +1,5 @@
 
-package com.kido.videopager.widget.coverflow.pager;
+package android.support.v4.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -14,6 +14,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.MathUtils;
 import android.view.FocusFinder;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -27,9 +28,6 @@ import android.view.ViewParent;
 import android.view.animation.Interpolator;
 import android.widget.EdgeEffect;
 import android.widget.Scroller;
-
-import com.kido.videopager.widget.coverflow.util.MathUtils;
-import com.kido.videopager.widget.coverflow.util.ViewCompat;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +47,7 @@ public class ViewPager extends ViewGroup {
     private static final boolean USE_CACHE = false;
 
     private static final int DEFAULT_OFFSCREEN_PAGES = 1;
-    private static final int MAX_SETTLE_DURATION = 800; // ms
+    private static final int MAX_SETTLE_DURATION = 600; // ms
     private static final int MIN_DISTANCE_FOR_FLING = 25; // dips
 
     private static final int DEFAULT_GUTTER_SIZE = 16; // dips
@@ -695,7 +693,7 @@ public class ViewPager extends ViewGroup {
      *
      * @param marginPixels Distance between adjacent pages in pixels
      * @see #getPageMargin()
-     * @see #setPageMarginDrawable(android.graphics.drawable.Drawable)
+     * @see #setPageMarginDrawable(Drawable)
      * @see #setPageMarginDrawable(int)
      */
     public void setPageMargin(int marginPixels) {
@@ -764,7 +762,7 @@ public class ViewPager extends ViewGroup {
     }
 
     /**
-     * Like {@link android.view.View#scrollBy}, but scroll smoothly instead of immediately.
+     * Like {@link View#scrollBy}, but scroll smoothly instead of immediately.
      *
      * @param x the number of pixels to scroll by on the X axis
      * @param y the number of pixels to scroll by on the Y axis
@@ -774,7 +772,7 @@ public class ViewPager extends ViewGroup {
     }
 
     /**
-     * Like {@link android.view.View#scrollBy}, but scroll smoothly instead of immediately.
+     * Like {@link View#scrollBy}, but scroll smoothly instead of immediately.
      *
      * @param x        the number of pixels to scroll by on the X axis
      * @param y        the number of pixels to scroll by on the Y axis
@@ -813,7 +811,7 @@ public class ViewPager extends ViewGroup {
         } else {
             final float pageWidth = width * mAdapter.getPageWidth(mCurItem);
             final float pageDelta = (float) Math.abs(dx) / (pageWidth + mPageMargin);
-            duration = (int) ((pageDelta + 1) * 400);
+            duration = (int) ((pageDelta + 1) * 100);
         }
         duration = Math.min(duration, MAX_SETTLE_DURATION);
 
@@ -2785,7 +2783,7 @@ public class ViewPager extends ViewGroup {
         /**
          * Gravity setting for use on decor views only:
          * Where to position the view page within the overall ViewPager
-         * container; constants are defined in {@link android.view.Gravity}.
+         * container; constants are defined in {@link Gravity}.
          */
         public int gravity;
 

@@ -1,5 +1,5 @@
 
-package com.kido.videopager.widget.coverflow.pager;
+package android.support.v4.view;
 
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
@@ -37,7 +37,7 @@ public abstract class PagerAdapter {
      * Create the page for the given position.  The adapter is responsible
      * for adding the view to the container given here, although it only
      * must ensure this is done by the time it returns from
-     * {@link #finishUpdate(android.view.ViewGroup)}.
+     * {@link #finishUpdate(ViewGroup)}.
      *
      * @param container The containing View in which the page will be shown.
      * @param position  The page position to be instantiated.
@@ -51,12 +51,12 @@ public abstract class PagerAdapter {
     /**
      * Remove a page for the given position.  The adapter is responsible
      * for removing the view from its container, although it only must ensure
-     * this is done by the time it returns from {@link #finishUpdate(android.view.ViewGroup)}.
+     * this is done by the time it returns from {@link #finishUpdate(ViewGroup)}.
      *
      * @param container The containing View from which the page will be removed.
      * @param position  The page position to be removed.
      * @param object    The same object that was returned by
-     *                  {@link #instantiateItem(android.view.View, int)}.
+     *                  {@link #instantiateItem(View, int)}.
      */
     public void destroyItem(ViewGroup container, int position, Object object) {
         destroyItem((View) container, position, object);
@@ -69,7 +69,7 @@ public abstract class PagerAdapter {
      * @param container The containing View from which the page will be removed.
      * @param position  The page position that is now the primary.
      * @param object    The same object that was returned by
-     *                  {@link #instantiateItem(android.view.View, int)}.
+     *                  {@link #instantiateItem(View, int)}.
      */
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
         setPrimaryItem((View) container, position, object);
@@ -92,7 +92,7 @@ public abstract class PagerAdapter {
      *
      * @param container The containing View which is displaying this adapter's
      *                  page views.
-     * @deprecated Use {@link #startUpdate(android.view.ViewGroup)}
+     * @deprecated Use {@link #startUpdate(ViewGroup)}
      */
     public void startUpdate(View container) {
     }
@@ -101,13 +101,13 @@ public abstract class PagerAdapter {
      * Create the page for the given position.  The adapter is responsible
      * for adding the view to the container given here, although it only
      * must ensure this is done by the time it returns from
-     * {@link #finishUpdate(android.view.ViewGroup)}.
+     * {@link #finishUpdate(ViewGroup)}.
      *
      * @param container The containing View in which the page will be shown.
      * @param position  The page position to be instantiated.
      * @return Returns an Object representing the new page.  This does not
      * need to be a View, but can be some other container of the page.
-     * @deprecated Use {@link #instantiateItem(android.view.ViewGroup, int)}
+     * @deprecated Use {@link #instantiateItem(ViewGroup, int)}
      */
     public Object instantiateItem(View container, int position) {
         throw new UnsupportedOperationException(
@@ -117,13 +117,13 @@ public abstract class PagerAdapter {
     /**
      * Remove a page for the given position.  The adapter is responsible
      * for removing the view from its container, although it only must ensure
-     * this is done by the time it returns from {@link #finishUpdate(android.view.View)}.
+     * this is done by the time it returns from {@link #finishUpdate(View)}.
      *
      * @param container The containing View from which the page will be removed.
      * @param position  The page position to be removed.
      * @param object    The same object that was returned by
-     *                  {@link #instantiateItem(android.view.View, int)}.
-     * @deprecated Use {@link #destroyItem(android.view.ViewGroup, int, Object)}
+     *                  {@link #instantiateItem(View, int)}.
+     * @deprecated Use {@link #destroyItem(ViewGroup, int, Object)}
      */
     public void destroyItem(View container, int position, Object object) {
         throw new UnsupportedOperationException("Required method destroyItem was not overridden");
@@ -136,8 +136,8 @@ public abstract class PagerAdapter {
      * @param container The containing View from which the page will be removed.
      * @param position  The page position that is now the primary.
      * @param object    The same object that was returned by
-     *                  {@link #instantiateItem(android.view.View, int)}.
-     * @deprecated Use {@link #setPrimaryItem(android.view.ViewGroup, int, Object)}
+     *                  {@link #instantiateItem(View, int)}.
+     * @deprecated Use {@link #setPrimaryItem(ViewGroup, int, Object)}
      */
     public void setPrimaryItem(View container, int position, Object object) {
     }
@@ -149,14 +149,14 @@ public abstract class PagerAdapter {
      *
      * @param container The containing View which is displaying this adapter's
      *                  page views.
-     * @deprecated Use {@link #finishUpdate(android.view.ViewGroup)}
+     * @deprecated Use {@link #finishUpdate(ViewGroup)}
      */
     public void finishUpdate(View container) {
     }
 
     /**
      * Determines whether a page View is associated with a specific key object
-     * as returned by {@link #instantiateItem(android.view.ViewGroup, int)}. This method is
+     * as returned by {@link #instantiateItem(ViewGroup, int)}. This method is
      * required for a PagerAdapter to function properly.
      *
      * @param view   Page View to check for association with <code>object</code>
@@ -195,7 +195,7 @@ public abstract class PagerAdapter {
      * change position and always returns {@link #POSITION_UNCHANGED}.
      *
      * @param object Object representing an item, previously returned by a call to
-     *               {@link #instantiateItem(android.view.View, int)}.
+     *               {@link #instantiateItem(View, int)}.
      * @return object's new position index from [0, {@link #getCount()}),
      * {@link #POSITION_UNCHANGED} if the object's position has not changed,
      * or {@link #POSITION_NONE} if the item is no longer present.
@@ -215,7 +215,7 @@ public abstract class PagerAdapter {
     /**
      * Register an observer to receive callbacks related to the adapter's data changing.
      *
-     * @param observer The {@link android.database.DataSetObserver} which will receive callbacks.
+     * @param observer The {@link DataSetObserver} which will receive callbacks.
      */
     public void registerDataSetObserver(DataSetObserver observer) {
         mObservable.registerObserver(observer);
@@ -224,7 +224,7 @@ public abstract class PagerAdapter {
     /**
      * Unregister an observer from callbacks related to the adapter's data changing.
      *
-     * @param observer The {@link android.database.DataSetObserver} which will be unregistered.
+     * @param observer The {@link DataSetObserver} which will be unregistered.
      */
     public void unregisterDataSetObserver(DataSetObserver observer) {
         mObservable.unregisterObserver(observer);

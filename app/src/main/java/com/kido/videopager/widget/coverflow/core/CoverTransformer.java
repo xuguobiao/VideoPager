@@ -1,9 +1,8 @@
 package com.kido.videopager.widget.coverflow.core;
 
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-
-import com.kido.videopager.widget.coverflow.pager.ViewPager;
 
 /**
  * 定义ViewPager滑动过程中的变化

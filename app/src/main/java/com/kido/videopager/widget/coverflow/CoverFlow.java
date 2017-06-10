@@ -1,8 +1,9 @@
 package com.kido.videopager.widget.coverflow;
 
 
+import android.support.v4.view.ViewPager;
+
 import com.kido.videopager.widget.coverflow.core.CoverTransformer;
-import com.kido.videopager.widget.coverflow.pager.ViewPager;
 
 /**
  * 参考crosswall/Android-Coverflow，使用ViewPager实现CoverFlow效果。（ViewPager不使用support包相关，直接copy源码修改。）

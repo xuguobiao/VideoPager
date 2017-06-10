@@ -1,9 +1,8 @@
 package com.kido.videopager.widget.coverflow.core;
 
+import android.support.v4.view.ViewPager;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
-
-import com.kido.videopager.widget.coverflow.pager.ViewPager;
 
 import java.lang.reflect.Field;
 

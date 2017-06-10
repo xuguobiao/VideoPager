@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.kido.videopager.widget.coverflow.util;
+package android.util;
 
 import java.util.Random;
 

@@ -2,12 +2,12 @@ package com.kido.videopager;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 
 import com.kido.videopager.adapter.VideoPagerAdapter;
 import com.kido.videopager.widget.coverflow.CoverFlow;
 import com.kido.videopager.widget.coverflow.core.PagerContainer;
-import com.kido.videopager.widget.coverflow.pager.PagerAdapter;
-import com.kido.videopager.widget.coverflow.pager.ViewPager;
 
 public class MainActivity extends Activity {
 

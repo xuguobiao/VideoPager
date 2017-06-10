@@ -4,13 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Point;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.kido.videopager.widget.coverflow.pager.ViewPager;
 import com.kido.videopager.widget.coverflow.util.ViewCompat;
 
 /**
