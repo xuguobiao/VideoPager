@@ -4,21 +4,44 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.kido.videopager.widget.coverflow.core.PagerContainer
+    <com.kido.videopager.widget.coverflow.CoverFlowLayout
         android:id="@+id/pager_container"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark">
 
         <android.support.v4.view.ViewPager
             android:layout_width="300dp"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fadingEdge="none"
             android:overScrollMode="never"
             android:requiresFadingEdge="none" />
 
-    </com.kido.videopager.widget.coverflow.core.PagerContainer>
+    </com.kido.videopager.widget.coverflow.CoverFlowLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="40dp"
+        android:paddingBottom="40dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="投粪" />
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="福气" />
+
+    </LinearLayout>
 
 
 </LinearLayout>

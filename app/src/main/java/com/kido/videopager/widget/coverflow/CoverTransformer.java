@@ -1,15 +1,18 @@
-package com.kido.videopager.widget.coverflow.core;
+package com.kido.videopager.widget.coverflow;
 
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
+
+import com.kido.videopager.utils.Logger;
+
+import java.util.List;
 
 /**
  * 定义ViewPager滑动过程中的变化
  *
  * @author Kido
  */
-public class CoverTransformer implements ViewPager.PageTransformer {
+class CoverTransformer implements ViewPager.PageTransformer {
 
     public static final String TAG = "CoverTransformer";
 
@@ -24,17 +27,24 @@ public class CoverTransformer implements ViewPager.PageTransformer {
     private float rotationX = 0f;
     private float rotationY = 0f;
 
+    private List<CoverFlowLayout.Transformer> otherTransformers;
+
     public CoverTransformer(float scale, float pagerMargin, float spaceValue, float rotationY) {
+        this(scale, pagerMargin, spaceValue, rotationY, null);
+    }
+
+    public CoverTransformer(float scale, float pagerMargin, float spaceValue, float rotationY, List<CoverFlowLayout.Transformer> otherTransformers) {
         this.scale = scale;
         this.pagerMargin = pagerMargin;
         this.spaceValue = spaceValue;
         this.rotationY = rotationY;
+        this.otherTransformers = otherTransformers;
     }
 
     @Override
     public void transformPage(View page, float position) {
 
-        Log.d(TAG, "position:" + position);
+        Logger.d(TAG, "page=%s, position=%s", page.hashCode(), position);
 
 
         if (rotationY != 0) {
@@ -43,22 +53,34 @@ public class CoverTransformer implements ViewPager.PageTransformer {
         }
 
         if (scale != 0f) {
-            float realScale = Utils.getFloat(1 - Math.abs(position * scale), SCALE_MIN, SCALE_MAX);
+            float realScale = getFloat(1 - Math.abs(position * scale), SCALE_MIN, SCALE_MAX);
             page.setScaleX(realScale);
             page.setScaleY(realScale);
         }
 
         if (pagerMargin != 0) {
-
             float realPagerMargin = position * (pagerMargin);
-
             if (spaceValue != 0) {
-                float realSpaceValue = Utils.getFloat(Math.abs(position * spaceValue), MARGIN_MIN, MARGIN_MAX);
+                float realSpaceValue = getFloat(Math.abs(position * spaceValue), MARGIN_MIN, MARGIN_MAX);
                 realPagerMargin += (position > 0) ? realSpaceValue : -realSpaceValue;
             }
-
             page.setTranslationX(realPagerMargin);
         }
 
+        // notify other transformers
+        notifyOtherTransformers(page, position);
+
+    }
+
+    private void notifyOtherTransformers(View page, float position) {
+        if (otherTransformers != null) {
+            for (CoverFlowLayout.Transformer transformer : otherTransformers) {
+                transformer.transform(page, position);
+            }
+        }
+    }
+
+    private static float getFloat(float value, float minValue, float maxValue) {
+        return Math.min(maxValue, Math.max(minValue, value));
     }
 }

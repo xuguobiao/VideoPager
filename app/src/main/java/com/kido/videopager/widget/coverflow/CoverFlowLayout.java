@@ -1,26 +1,26 @@
-package com.kido.videopager.widget.coverflow.core;
+package com.kido.videopager.widget.coverflow;
 
-import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Point;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
+import android.widget.Scroller;
 
-import com.kido.videopager.widget.coverflow.util.ViewCompat;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * PagerContainer: A layout that displays a ViewPager with its children that are outside
- * the typical pager bounds.
- *
  * @author Kido
- * @see(<a href = "https://gist.github.com/devunwired/8cbe094bb7a783e37ad1"></>)
  */
-public class PagerContainer extends FrameLayout implements ViewPager.OnPageChangeListener {
+public class CoverFlowLayout extends FrameLayout implements ViewPager.OnPageChangeListener {
 
     private final static float DURATION_FACTOR_BETA = 1.5f;
     private final static float DURATION_FACTOR_ALPHA = 0f;
@@ -28,17 +28,17 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
     boolean mNeedsRedraw = false;
     boolean isOverlapEnabled = false;
 
-    public PagerContainer(Context context) {
+    public CoverFlowLayout(Context context) {
         super(context);
         init();
     }
 
-    public PagerContainer(Context context, AttributeSet attrs) {
+    public CoverFlowLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public PagerContainer(Context context, AttributeSet attrs, int defStyle) {
+    public CoverFlowLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
@@ -57,7 +57,6 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
         isOverlapEnabled = overlapEnabled;
     }
 
-    @SuppressLint("MissingSuperCall")
     @Override
     protected void onFinishInflate() {
         try {
@@ -65,7 +64,7 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
             mPager.setClipChildren(false);
             mPager.setOverScrollMode(OVER_SCROLL_NEVER);
             mPager.addOnPageChangeListener(this);
-            Utils.setViewPagerScroller(mPager, DURATION_FACTOR_BETA, DURATION_FACTOR_ALPHA);
+            setViewPagerScroller(mPager, DURATION_FACTOR_BETA, DURATION_FACTOR_ALPHA);
         } catch (Exception e) {
             throw new IllegalStateException("The root child of PagerContainer must be a ViewPager");
         }
@@ -98,7 +97,7 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
             case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_UP:
-                int delta = Utils.isInNonTappableRegion(getWidth(), mPager.getWidth(), mInitialTouch.x, ev.getX());
+                int delta = isInNonTappableRegion(getWidth(), mPager.getWidth(), mInitialTouch.x, ev.getX());
                 if (delta != 0) {
                     int preItem = mPager.getCurrentItem();
                     int currentItem = preItem + delta;
@@ -160,6 +159,113 @@ public class PagerContainer extends FrameLayout implements ViewPager.OnPageChang
     @Override
     public void onPageScrollStateChanged(int state) {
         mNeedsRedraw = (state != ViewPager.SCROLL_STATE_IDLE);
+    }
+
+    public interface Transformer {
+        /**
+         * Apply a property transformation to the given page.
+         *
+         * @param page     Apply the transformation to this page
+         * @param position Position of page relative to the current front-and-center
+         *                 position of the pager. 0 is front and center. 1 is one full
+         *                 page position to the right, and -1 is one page position to the left.
+         */
+        void transform(View page, float position);
+    }
+
+
+    public static class Builder {
+        private float scaleValue;
+        private float pagerMargin;
+        private float spaceSize;
+        private float rotationY;
+        private List<Transformer> childTransformers;
+
+        public Builder() {
+            childTransformers = new ArrayList<>();
+        }
+
+        public CoverFlowLayout.Builder scale(float scaleValue) {
+            this.scaleValue = scaleValue;
+            return this;
+        }
+
+        public CoverFlowLayout.Builder pagerMargin(float pagerMargin) {
+            this.pagerMargin = pagerMargin;
+            return this;
+        }
+
+        public CoverFlowLayout.Builder spaceSize(float spaceSize) {
+            this.spaceSize = spaceSize;
+            return this;
+        }
+
+        public CoverFlowLayout.Builder rotationY(float rotationY) {
+            this.rotationY = rotationY;
+            return this;
+        }
+
+        public CoverFlowLayout.Builder addChildTransformer(int childId, Transformer transformer) {
+            this.childTransformers.add(transformer);
+            return this;
+        }
+
+
+        public CoverFlowLayout.Builder build() {
+            return this;
+        }
+    }
+
+    public void config(CoverFlowLayout.Builder builder) {
+        if (null == builder) {
+            throw new IllegalArgumentException("A non-null CoverFlowLayout.Builde must be provided");
+        }
+
+        if (this.mPager != null) {
+            this.mPager.setPageTransformer(false,
+                    new CoverTransformer(builder.scaleValue, builder.pagerMargin, builder.spaceSize, builder.rotationY, builder.childTransformers));
+        }
+    }
+
+
+    private static int isInNonTappableRegion(int containerWidth, int pagerWidth, float oldX, float newX) {
+        int tappableWidth = pagerWidth;
+        int totalWidth = containerWidth;
+        int nonTappableWidth = (totalWidth - tappableWidth) / 2;
+        if (oldX < nonTappableWidth && newX < nonTappableWidth) {
+            return -(int) Math.ceil((nonTappableWidth - newX) / (float) tappableWidth);
+        }
+        nonTappableWidth = (totalWidth + tappableWidth) / 2;
+        if (oldX > nonTappableWidth && newX > nonTappableWidth) {
+            return (int) Math.ceil((newX - nonTappableWidth) / (float) tappableWidth);
+        }
+        return 0;
+    }
+
+    /**
+     * y = beta * x + alpha
+     * <p>
+     * destDuration = oriDuration * beta + alpha
+     */
+    private static void setViewPagerScroller(ViewPager viewPager, final float beta, final float alpha) {
+        try {
+            Field scrollerField = ViewPager.class.getDeclaredField("mScroller");
+            scrollerField.setAccessible(true);
+            Field interpolator = ViewPager.class.getDeclaredField("sInterpolator");
+            interpolator.setAccessible(true);
+
+            Scroller scroller = new Scroller(viewPager.getContext(), (Interpolator) interpolator.get(null)) {
+                @Override
+                public void startScroll(int startX, int startY, int dx, int dy, int duration) {
+                    super.startScroll(startX, startY, dx, dy, (int) (duration * beta + alpha));
+                }
+            };
+            scrollerField.set(viewPager, scroller);
+        } catch (NoSuchFieldException e) {
+            // Do nothing.
+        } catch (IllegalAccessException e) {
+            // Do nothing.
+        }
     }
 
 }
