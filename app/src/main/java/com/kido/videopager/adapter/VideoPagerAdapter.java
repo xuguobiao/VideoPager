@@ -32,15 +32,16 @@ public class VideoPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         VideoData data = datas.get(position);
-        View view = mInflater.inflate(R.layout.item_page, null);
+        int layoutId = data.height >= data.width ? R.layout.item_page : R.layout.item_page_hor;
+        View view = mInflater.inflate(layoutId, null);
         RoundedImageView imageView = (RoundedImageView) view.findViewById(R.id.imageView);
-        if (data.height >= data.width) {
-            imageView.setBackground(mContext.getResources().getDrawable(R.drawable.bg_black_corner));
-            imageView.setCornerRadius(0);
-        } else {
-            imageView.setBackground(null);
-            imageView.setCornerRadius(mContext.getResources().getDimensionPixelSize(R.dimen.card_corner_radius));
-        }
+//        if (data.height >= data.width) {
+//            imageView.setBackground(mContext.getResources().getDrawable(R.drawable.bg_black_corner));
+//            imageView.setCornerRadius(0);
+//        } else {
+//            imageView.setBackground(null);
+//            imageView.setCornerRadius(mContext.getResources().getDimensionPixelSize(R.dimen.card_corner_radius));
+//        }
         imageView.setImageResource(data.videoThumb);
 //        TextView title = (TextView) view.findViewById(R.id.title);
 //        title.setText(data.title);
