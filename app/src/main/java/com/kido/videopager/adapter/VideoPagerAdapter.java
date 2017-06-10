@@ -36,7 +36,7 @@ public class VideoPagerAdapter extends PagerAdapter {
         View view = mInflater.inflate(layoutId, null);
         ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
         imageView.setImageResource(data.videoThumb);
-//        TextView title = (TextView)view.findViewById(R.id.title);
+//        TextView title = (TextView) view.findViewById(R.id.title);
 //        title.setText(data.title);
 
         container.addView(view);

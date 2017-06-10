@@ -31,10 +31,11 @@ public class MainActivity extends Activity {
         PagerAdapter adapter = new VideoPagerAdapter(this, loadData());
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(adapter.getCount());
+//        pager.setPageMargin();
 
         mCoverFlowLayout.config(new CoverFlowLayout.Builder()
-                .scale(0.3f)
-                .pagerMargin(getResources().getDimensionPixelSize(R.dimen.pager_margin))
+                .scale(0.2f)
+                .pagerMargin(getResources().getDimensionPixelSize(R.dimen.pager_margin_1))
                 .spaceSize(0f)
                 .build()
         );
