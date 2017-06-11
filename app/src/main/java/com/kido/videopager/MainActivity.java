@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 
 import com.kido.videopager.adapter.VideoPagerAdapter;
 import com.kido.videopager.utils.Logger;
+import com.kido.videopager.widget.SlidingTabLayout;
 import com.kido.videopager.widget.coverflow.CoverFlowLayout;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
+    private SlidingTabLayout mTabLayout;
     private CoverFlowLayout mCoverFlowLayout;
     private List<VideoData> mVideDatas;
 
@@ -25,6 +27,10 @@ public class MainActivity extends Activity {
     }
 
     private void bindViews() {
+        mTabLayout = (SlidingTabLayout) findViewById(R.id.tabLayout);
+        mTabLayout.addNewTab("频道");
+        mTabLayout.addNewTab("有料");
+        mTabLayout.addNewTab("播单");
         mCoverFlowLayout = (CoverFlowLayout) findViewById(R.id.cover_flow_layout);
 //        mCoverFlowLayout.setOverlapEnabled(true);
 
@@ -40,8 +46,8 @@ public class MainActivity extends Activity {
 //                .scale(0.2f)
 //                .pagerMargin(getResources().getDimensionPixelSize(R.dimen.pager_margin_1))
 //                .spaceSize(0f)
-                .addChildTransformer(new VideoPagerAdapter.VideoPagerTransformer())
-                .build()
+                        .addChildTransformer(new VideoPagerAdapter.VideoPagerTransformer())
+                        .build()
         );
 
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

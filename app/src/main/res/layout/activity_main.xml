@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.kido.videopager.widget.SlidingTabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorPrimary"
+        app:tl_indicator_color="#ffffff"
+        app:tl_indicator_corner_radius="1.5dp"
+        app:tl_indicator_height="3dp"
+        app:tl_indicator_width="10dp"
+        app:tl_textSelectColor="#ffffff"
+        app:tl_textUnselectColor="#aaffffff" />
+
     <com.kido.videopager.widget.coverflow.CoverFlowLayout
         android:id="@+id/cover_flow_layout"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content">
+        android:layout_weight="1">
 
         <android.support.v4.view.ViewPager
             android:layout_width="300dp"

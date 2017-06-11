@@ -144,14 +144,14 @@ public class CoverFlowLayout extends FrameLayout implements ViewPager.OnPageChan
                     if (object instanceof Fragment) {
                         Fragment fragment = (Fragment) object;
                         if (loopCounter == position) {
-                            ViewCompat.setElevation(fragment.getView(), 8.0f);
+                            ViewCompat.setElevation(fragment.getView(), 15.0f);
                         } else {
                             ViewCompat.setElevation(fragment.getView(), 0.0f);
                         }
                     } else {
                         ViewGroup view = (ViewGroup) object;
                         if (loopCounter == position) {
-                            ViewCompat.setElevation(view, 8.0f);
+                            ViewCompat.setElevation(view, 15.0f);
                         } else {
                             ViewCompat.setElevation(view, 0.0f);
                         }
