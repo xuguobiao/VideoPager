@@ -3,6 +3,7 @@ package com.kido.videopager.widget.coverflow;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Point;
+import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -52,7 +53,10 @@ public class CoverFlowLayout extends FrameLayout implements ViewPager.OnPageChan
         //Child clipping doesn't work with hardware acceleration in Android 3.x/4.x
         //You need to set this value here if using hardware acceleration in an
         // application targeted at these releases.
-//        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+
     }
 
     public void setOverlapEnabled(boolean overlapEnabled) {
