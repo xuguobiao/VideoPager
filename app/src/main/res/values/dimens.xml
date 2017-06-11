@@ -22,6 +22,8 @@
     <dimen name="card_image_width">300dp</dimen>
     <dimen name="card_image_height_ver">300dp</dimen>
     <dimen name="card_image_height_hor">170dp</dimen>
+    <dimen name="card_image_margin_top_ver">0dp</dimen>
+    <dimen name="card_image_margin_top_hor">65dp</dimen>
 
 
 </resources>
