@@ -13,17 +13,26 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-
-        <com.kido.videopager.widget.roundedimageview.RoundedImageView
-            android:id="@+id/imageView"
-            android:layout_width="300dp"
-            android:layout_height="170dp"
+        <com.kido.videopager.widget.ShadowLayout
+            android:id="@+id/image_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="65dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/image_hor_1"
-            android:visibility="visible"
-            app:riv_corner_radius="@dimen/card_corner_radius" />
+            app:sl_cornerRadius="@dimen/card_corner_radius"
+            app:sl_dx="0dp"
+            app:sl_dy="4dp"
+            app:sl_shadowColor="#AA000000"
+            app:sl_shadowRadius="@dimen/card_corner_radius">
 
+            <com.kido.videopager.widget.roundedimageview.RoundedImageView
+                android:id="@+id/imageView"
+                android:layout_width="300dp"
+                android:layout_height="170dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image_hor_1"
+                app:riv_corner_radius="@dimen/card_corner_radius" />
+
+        </com.kido.videopager.widget.ShadowLayout>
 
         <include layout="@layout/item_page_inner_below" />
     </LinearLayout>

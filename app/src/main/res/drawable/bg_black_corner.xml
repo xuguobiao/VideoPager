@@ -18,7 +18,7 @@
 
         <shape android:shape="rectangle">
             <solid android:color="#dd000000" />
-            <corners android:radius="8dp" />
+            <corners android:radius="@dimen/card_corner_radius" />
         </shape>
     </item>
 

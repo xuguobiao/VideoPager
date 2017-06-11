@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.kido.videopager.R;
 import com.kido.videopager.VideoData;
+import com.kido.videopager.widget.ShadowLayout;
 import com.kido.videopager.widget.coverflow.CoverFlowLayout;
 import com.kido.videopager.widget.roundedimageview.RoundedImageView;
 
@@ -53,20 +54,19 @@ public class VideoPagerAdapter extends PagerAdapter {
 
     private void adjustLayout(ViewHolder holder, int position) { // 垂直和水平 两种布局有差异
         VideoData data = datas.get(position);
-        LinearLayout.LayoutParams params = ((LinearLayout.LayoutParams) holder.imageView.getLayoutParams());
         if (data.height >= data.width) { // vertical
             holder.imageView.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_black_corner));
             holder.imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             holder.imageView.setCornerRadius(0);
 
-            params.height = mContext.getResources().getDimensionPixelSize(R.dimen.card_image_height_ver);
-            params.topMargin = mContext.getResources().getDimensionPixelSize(R.dimen.card_image_margin_top_ver);
+            ((ShadowLayout.LayoutParams) holder.imageView.getLayoutParams()).height = mContext.getResources().getDimensionPixelSize(R.dimen.card_image_height_ver);
+            ((LinearLayout.LayoutParams) holder.imageLayout.getLayoutParams()).topMargin = mContext.getResources().getDimensionPixelSize(R.dimen.card_image_margin_top_ver);
         } else { // horizontal
             holder.imageView.setBackgroundDrawable(null);
             holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             holder.imageView.setCornerRadius(mContext.getResources().getDimensionPixelSize(R.dimen.card_corner_radius));
-            params.height = mContext.getResources().getDimensionPixelSize(R.dimen.card_image_height_hor);
-            params.topMargin = mContext.getResources().getDimensionPixelSize(R.dimen.card_image_margin_top_hor);
+            ((ShadowLayout.LayoutParams) holder.imageView.getLayoutParams()).height = mContext.getResources().getDimensionPixelSize(R.dimen.card_image_height_hor);
+            ((LinearLayout.LayoutParams) holder.imageLayout.getLayoutParams()).topMargin = mContext.getResources().getDimensionPixelSize(R.dimen.card_image_margin_top_hor);
         }
     }
 
@@ -96,7 +96,7 @@ public class VideoPagerAdapter extends PagerAdapter {
 
         public ViewHolder(View view) {
             belowLayout = view.findViewById(R.id.below_layout);
-//            imageLayout = view.findViewById(R.id.image_layout);
+            imageLayout = view.findViewById(R.id.image_layout);
             imageView = (RoundedImageView) view.findViewById(R.id.imageView);
             title = (TextView) view.findViewById(R.id.title);
 
@@ -118,14 +118,14 @@ public class VideoPagerAdapter extends PagerAdapter {
             holder.belowLayout.setAlpha(realAlpha);
 
             float realScale = getFloat(1 - Math.abs(position * 0.2f), SCALE_MIN, SCALE_MAX);
-            holder.imageView.setScaleX(realScale);
-            holder.imageView.setScaleY(realScale);
+            holder.imageLayout.setScaleX(realScale);
+            holder.imageLayout.setScaleY(realScale);
             holder.belowLayout.setScaleX(realScale);
             holder.belowLayout.setScaleX(realScale);
 
-            float pagerMargin = page.getContext().getResources().getDimensionPixelSize(R.dimen.pager_margin_1);
+            float pagerMargin = page.getContext().getResources().getDimensionPixelSize(R.dimen.pager_margin);
             float realPagerMargin = position * (pagerMargin);
-            holder.imageView.setTranslationX(realPagerMargin);
+            holder.imageLayout.setTranslationX(realPagerMargin);
         }
     }
 
