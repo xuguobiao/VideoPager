@@ -5,8 +5,8 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:id="@+id/below_layout"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
     android:paddingRight="20dp"
     android:paddingLeft="20dp">
 

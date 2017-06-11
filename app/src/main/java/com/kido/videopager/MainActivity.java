@@ -1,23 +1,28 @@
 package com.kido.videopager;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 
-import com.kido.videopager.adapter.VideoPagerAdapter;
-import com.kido.videopager.utils.Logger;
+import com.kido.videopager.adapter.MyPagerAdapter;
+import com.kido.videopager.fragment.BDFragment;
+import com.kido.videopager.fragment.PDFragment;
+import com.kido.videopager.fragment.YLFragment;
+import com.kido.videopager.widget.CustomViewPager;
 import com.kido.videopager.widget.SlidingTabLayout;
-import com.kido.videopager.widget.coverflow.CoverFlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
+
+    private final String[] mTitles = {
+            "频道", "有料", "播单"
+    };
+    private List<Fragment> mFragments = new ArrayList<>();
 
     private SlidingTabLayout mTabLayout;
-    private CoverFlowLayout mCoverFlowLayout;
-    private List<VideoData> mVideDatas;
+    private CustomViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,71 +33,17 @@ public class MainActivity extends Activity {
 
     private void bindViews() {
         mTabLayout = (SlidingTabLayout) findViewById(R.id.tabLayout);
-        mTabLayout.addNewTab("频道");
-        mTabLayout.addNewTab("有料");
-        mTabLayout.addNewTab("播单");
-        mCoverFlowLayout = (CoverFlowLayout) findViewById(R.id.cover_flow_layout);
-//        mCoverFlowLayout.setOverlapEnabled(true);
+        mViewPager = (CustomViewPager) findViewById(R.id.viewPager);
 
-        final ViewPager pager = mCoverFlowLayout.getViewPager();
+        mFragments.add(new PDFragment());
+        mFragments.add(new YLFragment());
+        mFragments.add(new BDFragment());
 
-        mVideDatas = loadData();
-        PagerAdapter adapter = new VideoPagerAdapter(this, mVideDatas);
-        pager.setAdapter(adapter);
-        pager.setOffscreenPageLimit(adapter.getCount());
-//        pager.setPageMargin();
+        mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), mFragments, mTitles));
+        mViewPager.setPagingEnabled(false);
 
-        mCoverFlowLayout.config(new CoverFlowLayout.Builder()
-//                .scale(0.2f)
-//                .pagerMargin(getResources().getDimensionPixelSize(R.dimen.pager_margin_1))
-//                .spaceSize(0f)
-                        .addChildTransformer(new VideoPagerAdapter.VideoPagerTransformer())
-                        .build()
-        );
-
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Logger.d("kido", "onPageScrolled-> position=%s, positionOffset=%s, positionOffsetPixels=%s",
-                        position, positionOffset, positionOffsetPixels);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                Logger.d("kido", "onPageSelected-> position=%s", position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                Logger.d("kido", "onPageScrollStateChanged-> state=%s", state);
-            }
-        });
-
+        mTabLayout.setViewPager(mViewPager);
+        mTabLayout.setCurrentTab(1, false);
     }
 
-    private static float getFloat(float value, float minValue, float maxValue) {
-        return Math.min(maxValue, Math.max(minValue, value));
-    }
-
-    public static final int[] VIDEO_THUMBS = {R.drawable.image_hor_1, R.drawable.image_ver_1, R.drawable.image_hor_2, R.drawable.image_hor_3,
-            R.drawable.image_hor_4, R.drawable.image_ver_2, R.drawable.image_ver_3, R.drawable.image_ver_4};
-
-    public static final String[] VIDEO_WIDTH_HEIGHT = {"400x300", "300x400", "400x300", "400x300",
-            "400x300", "300x400", "300x400", "300x400",
-    };
-
-
-    private List<VideoData> loadData() {
-        List<VideoData> datas = new ArrayList<>();
-        for (int i = 0, z = VIDEO_THUMBS.length; i < z; i++) {
-            VideoData data = new VideoData();
-            data.videoThumb = VIDEO_THUMBS[i];
-            data.title = "This is the video title.This is the video title.This is the video title. " + i;
-            String[] widthHeight = VIDEO_WIDTH_HEIGHT[i].split("x");
-            data.width = Integer.parseInt(widthHeight[0]);
-            data.height = Integer.parseInt(widthHeight[1]);
-            datas.add(data);
-        }
-        return datas;
-    }
 }

@@ -17,42 +17,11 @@
         app:tl_textSelectColor="#ffffff"
         app:tl_textUnselectColor="#aaffffff" />
 
-    <com.kido.videopager.widget.coverflow.CoverFlowLayout
-        android:id="@+id/cover_flow_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1">
+    <com.kido.videopager.widget.CustomViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
-        <android.support.v4.view.ViewPager
-            android:layout_width="300dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center" />
-
-    </com.kido.videopager.widget.coverflow.CoverFlowLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="投粪" />
-
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="福气" />
-
-    </LinearLayout>
-
+    </com.kido.videopager.widget.CustomViewPager>
 
 </LinearLayout>
