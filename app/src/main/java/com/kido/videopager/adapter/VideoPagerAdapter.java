@@ -140,51 +140,6 @@ public class VideoPagerAdapter extends PagerAdapter {
 
     }
 
-    /*
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipChildren="true"
-    android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-
-        <com.kido.videopager.widget.ShadowLayout
-            android:id="@+id/image_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:sl_cornerRadius="@dimen/card_corner_radius"
-            app:sl_dx="0dp"
-            app:sl_dy="12dp"
-            app:sl_shadowColor="#2a000000"
-            app:sl_shadowRadius="10dp">
-
-            <com.kido.videopager.widget.roundedimageview.RoundedImageView
-                android:id="@+id/imageView"
-                android:layout_width="280dp"
-                android:layout_height="280dp"
-                android:background="@drawable/bg_black_corner"
-                android:scaleType="fitCenter"
-                android:src="@drawable/image_ver_1"
-                app:riv_corner_radius="0dp" />
-
-        </com.kido.videopager.widget.ShadowLayout>
-
-        <include layout="@layout/item_page_inner_below" />
-    </LinearLayout>
-
-</RelativeLayout>
-
-     */
-
 
     /*************************************/
 
