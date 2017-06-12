@@ -2,9 +2,10 @@ package com.kido.videopager;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.kido.videopager.view.YouLiaoLayout;
 import com.kido.videopager.widget.tablayout.FixedTabLayout;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
 public class MainActivity extends Activity {
 
     private FixedTabLayout mTabLayout;
-    private YouLiaoLayout mYouLiaoLayout;
+    private FrameLayout mPageContainer;
 
     private static final String[] TAB_TITLES = {"频道", "有料", "播单"};
 
@@ -25,8 +26,8 @@ public class MainActivity extends Activity {
     }
 
     private void bindViews() {
-        mYouLiaoLayout = (YouLiaoLayout) findViewById(R.id.youliao_layout);
         mTabLayout = (FixedTabLayout) findViewById(R.id.tabLayout);
+        mPageContainer = (FrameLayout) findViewById(R.id.page_container);
 
         List<FixedTabLayout.TabItem> tabItems = new ArrayList<>();
         for (String title : TAB_TITLES) {
@@ -35,10 +36,13 @@ public class MainActivity extends Activity {
 
         mTabLayout.setTabData(tabItems);
         mTabLayout.setCurrentTab(1);
+        switchLayout(1);
+        mTabLayout.showDot(2);
         mTabLayout.setOnTabSelectListener(new FixedTabLayout.OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
                 showToast("onTabSelect-> position=" + position + ", title=" + TAB_TITLES[position]);
+                switchLayout(position);
             }
 
             @Override
@@ -47,6 +51,13 @@ public class MainActivity extends Activity {
             }
         });
 
+    }
+
+    private void switchLayout(int pos) {
+        for (int i = 0; i < mPageContainer.getChildCount(); i++) {
+            int visibility = i == pos ? View.VISIBLE : View.GONE;
+            mPageContainer.getChildAt(i).setVisibility(visibility);
+        }
     }
 
     private void showToast(String msg) {

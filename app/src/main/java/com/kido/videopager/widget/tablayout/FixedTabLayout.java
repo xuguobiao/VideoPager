@@ -13,6 +13,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -126,6 +127,8 @@ public class FixedTabLayout extends FrameLayout implements ValueAnimator.Animato
     private static final int ID_ITEM_IV_TAB_ICON = 2009001;
     private static final int ID_ITEM_TV_TAB_TITLE = 2009002;
 
+    private static final int ID_ITEM_TV_TAB_MSG = 2009010;
+
     private static final int INVALID_RES_ID = -1;
 
     public FixedTabLayout(Context context) {
@@ -238,18 +241,27 @@ public class FixedTabLayout extends FrameLayout implements ValueAnimator.Animato
     }
 
     private View createTabView() {
-//        View tabView = View.inflate(mContext, R.layout.layout_fixedtablayout_item_top, null); // 可以根据iconGravivy加载不同布局
+        return createTabView(mIconGravity);
+    }
 
+    /**
+     * 根据不同的iconGravity动态生成TabView
+     */
+    private View createTabView(int iconGravity) {
         RelativeLayout rLayout = new RelativeLayout(mContext);
 
+        // LinearLayout start
         LinearLayout lLayout = new LinearLayout(mContext);
         lLayout.setId(ID_ITEM_LL_TAP);
         lLayout.setGravity(Gravity.CENTER);
-        lLayout.setOrientation(LinearLayout.VERTICAL);
+        if (iconGravity == Gravity.TOP || iconGravity == Gravity.BOTTOM) {
+            lLayout.setOrientation(LinearLayout.VERTICAL);
+        } else {
+            lLayout.setOrientation(LinearLayout.HORIZONTAL);
+        }
         RelativeLayout.LayoutParams lLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
         lLayout.setLayoutParams(lLayoutParams);
-
 
         ImageView iconImageView = new ImageView(mContext);
         iconImageView.setId(ID_ITEM_IV_TAB_ICON);
@@ -260,13 +272,36 @@ public class FixedTabLayout extends FrameLayout implements ValueAnimator.Animato
         titleTextView.setSingleLine();
         titleTextView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        lLayout.addView(iconImageView);
-        lLayout.addView(titleTextView);
+        if (iconGravity == Gravity.TOP || iconGravity == Gravity.LEFT) {
+            lLayout.addView(iconImageView);
+            lLayout.addView(titleTextView);
+        } else {
+            lLayout.addView(titleTextView);
+            lLayout.addView(iconImageView);
+        }
+        // LinearLayout end
+
+        // MsgView start
+        TabMsgView msgView = new TabMsgView(mContext);
+        msgView.setId(ID_ITEM_TV_TAB_MSG);
+        msgView.setGravity(Gravity.CENTER);
+        msgView.setTextColor(Color.parseColor("#ffffff")); // white
+        msgView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11.5f);
+        msgView.setBackgroundColor(Color.parseColor("#FD481F")); // red
+        msgView.setIsRadiusHalfHeight(true);
+        msgView.setVisibility(View.GONE);
+
+        RelativeLayout.LayoutParams msgViewParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        msgViewParams.addRule(RelativeLayout.RIGHT_OF, ID_ITEM_LL_TAP);
+        msgView.setLayoutParams(msgViewParams);
+        // MsgView end
 
         rLayout.addView(lLayout);
+        rLayout.addView(msgView);
 
         return rLayout;
     }
+
 
     /**
      * 创建并添加tab
@@ -826,7 +861,7 @@ public class FixedTabLayout extends FrameLayout implements ValueAnimator.Animato
 
     public TextView getTitleView(int tab) {
         View tabView = mTabsContainer.getChildAt(tab);
-        TextView tv_tab_title = (TextView) tabView.findViewById(R.id.tv_tab_title);
+        TextView tv_tab_title = (TextView) tabView.findViewById(ID_ITEM_TV_TAB_TITLE);
         return tv_tab_title;
     }
 
@@ -835,6 +870,114 @@ public class FixedTabLayout extends FrameLayout implements ValueAnimator.Animato
     // show MsgTipView
     private Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private SparseArray<Boolean> mInitSetMap = new SparseArray<>();
+
+
+    /**
+     * 显示未读消息
+     *
+     * @param position 显示tab位置
+     * @param num      num小于等于0显示红点,num大于0显示数字
+     */
+    public void showMsg(int position, int num) {
+        if (position >= mTabCount) {
+            position = mTabCount - 1;
+        }
+
+        View tabView = mTabsContainer.getChildAt(position);
+        TabMsgView tipView = (TabMsgView) tabView.findViewById(ID_ITEM_TV_TAB_MSG);
+        if (tipView != null) {
+            UnreadMsgUtils.show(tipView, num);
+
+            if (mInitSetMap.get(position) != null && mInitSetMap.get(position)) {
+                return;
+            }
+
+            if (!mIconVisible) {
+                setMsgMargin(position, 2, 2);
+            } else {
+                setMsgMargin(position, 0,
+                        mIconGravity == Gravity.LEFT || mIconGravity == Gravity.RIGHT ? 4 : 0);
+            }
+
+            mInitSetMap.put(position, true);
+        }
+    }
+
+    /**
+     * 显示未读红点
+     *
+     * @param position 显示tab位置
+     */
+    public void showDot(int position) {
+        if (position >= mTabCount) {
+            position = mTabCount - 1;
+        }
+        showMsg(position, 0);
+    }
+
+    public void hideMsg(int position) {
+        if (position >= mTabCount) {
+            position = mTabCount - 1;
+        }
+
+        View tabView = mTabsContainer.getChildAt(position);
+        TabMsgView tipView = (TabMsgView) tabView.findViewById(ID_ITEM_TV_TAB_MSG);
+        if (tipView != null) {
+            tipView.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 设置提示红点偏移,注意:
+     * <li>1.控件为固定高度:参照点为tab内容的右上角</li>
+     * <li>2.控件高度不固定(WRAP_CONTENT):参照点为tab内容的右上角,此时高度已是红点的最高显示范围,所以这时bottomPadding其实就是topPadding</li>
+     */
+    public void setMsgMargin(int position, float leftPadding, float bottomPadding) {
+        if (position >= mTabCount) {
+            position = mTabCount - 1;
+        }
+        View tabView = mTabsContainer.getChildAt(position);
+        TabMsgView tipView = (TabMsgView) tabView.findViewById(ID_ITEM_TV_TAB_MSG);
+        if (tipView != null) {
+            TextView tv_tab_title = (TextView) tabView.findViewById(ID_ITEM_TV_TAB_TITLE);
+            mTextPaint.setTextSize(mTextsize);
+            float textWidth = mTextPaint.measureText(tv_tab_title.getText().toString());
+            float textHeight = mTextPaint.descent() - mTextPaint.ascent();
+            MarginLayoutParams lp = (MarginLayoutParams) tipView.getLayoutParams();
+
+            float iconH = mIconHeight;
+            float margin = 0;
+            if (mIconVisible) {
+                if (iconH <= 0) {
+                    iconH = mContext.getResources().getDrawable(mTabItems.get(position).getTabSelectedIcon()).getIntrinsicHeight();
+                }
+                margin = mIconMargin;
+            }
+
+            if (mIconGravity == Gravity.TOP || mIconGravity == Gravity.BOTTOM) {
+                lp.leftMargin = dp2px(leftPadding);
+                lp.topMargin = mHeight > 0 ? (int) (mHeight - textHeight - iconH - margin) / 2 - dp2px(bottomPadding) : dp2px(bottomPadding);
+            } else {
+                lp.leftMargin = dp2px(leftPadding);
+                lp.topMargin = mHeight > 0 ? (int) (mHeight - Math.max(textHeight, iconH)) / 2 - dp2px(bottomPadding) : dp2px(bottomPadding);
+            }
+
+            tipView.setLayoutParams(lp);
+        }
+    }
+
+    /**
+     * 当前类只提供了少许设置未读消息属性的方法,可以通过该方法获取MsgView对象从而各种设置
+     */
+    public TabMsgView getMsgView(int position) {
+        if (position >= mTabCount) {
+            position = mTabCount - 1;
+        }
+        View tabView = mTabsContainer.getChildAt(position);
+        TabMsgView tipView = (TabMsgView) tabView.findViewById(ID_ITEM_TV_TAB_MSG);
+        return tipView;
+    }
+
 
     private OnTabSelectListener mListener;
 
@@ -894,7 +1037,8 @@ public class FixedTabLayout extends FrameLayout implements ValueAnimator.Animato
         return (int) (sp * scale + 0.5f);
     }
 
-    /****************************************/
+    /*****************************************************************************************/
+    /*****************************************************************************************/
     interface TabItemInterface {
 
         String getTabTitle();
@@ -946,6 +1090,56 @@ public class FixedTabLayout extends FrameLayout implements ValueAnimator.Animato
         void onTabSelect(int position);
 
         void onTabReselect(int position);
+    }
+
+    /**
+     * 未读消息提示View,显示小红点或者带有数字的红点:
+     * 数字一位,圆
+     * 数字两位,圆角矩形,圆角是高度的一半
+     * 数字超过两位,显示99+
+     */
+    private static class UnreadMsgUtils {
+        public static void show(TabMsgView tabMsgView, int num) {
+            if (tabMsgView == null) {
+                return;
+            }
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) tabMsgView.getLayoutParams();
+            DisplayMetrics dm = tabMsgView.getResources().getDisplayMetrics();
+            tabMsgView.setVisibility(View.VISIBLE);
+            if (num <= 0) {//圆点,设置默认宽高
+                tabMsgView.setStrokeWidth(0);
+                tabMsgView.setText("");
+
+                lp.width = (int) (5 * dm.density);
+                lp.height = (int) (5 * dm.density);
+                tabMsgView.setLayoutParams(lp);
+            } else {
+                lp.height = (int) (18 * dm.density);
+                if (num > 0 && num < 10) {//圆
+                    lp.width = (int) (18 * dm.density);
+                    tabMsgView.setText(num + "");
+                } else if (num > 9 && num < 100) {//圆角矩形,圆角是高度的一半,设置默认padding
+                    lp.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                    tabMsgView.setPadding((int) (6 * dm.density), 0, (int) (6 * dm.density), 0);
+                    tabMsgView.setText(num + "");
+                } else {//数字超过两位,显示99+
+                    lp.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                    tabMsgView.setPadding((int) (6 * dm.density), 0, (int) (6 * dm.density), 0);
+                    tabMsgView.setText("99+");
+                }
+                tabMsgView.setLayoutParams(lp);
+            }
+        }
+
+        public static void setSize(TabMsgView rtv, int size) {
+            if (rtv == null) {
+                return;
+            }
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) rtv.getLayoutParams();
+            lp.width = size;
+            lp.height = size;
+            rtv.setLayoutParams(lp);
+        }
     }
 
 }

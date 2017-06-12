@@ -26,12 +26,28 @@
         <!-- add other views in titlebar here-->
     </FrameLayout>
 
-
-    <com.kido.videopager.view.YouLiaoLayout
-        android:id="@+id/youliao_layout"
+    <FrameLayout
+        android:id="@+id/page_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.kido.videopager.view.YouLiaoLayout>
+        <com.kido.videopager.view.ChannelLayout
+            android:id="@+id/channel_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.kido.videopager.view.YouLiaoLayout
+            android:id="@+id/youliao_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.kido.videopager.view.PlayListLayout
+            android:id="@+id/playlist_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </FrameLayout>
+
 
 </LinearLayout>

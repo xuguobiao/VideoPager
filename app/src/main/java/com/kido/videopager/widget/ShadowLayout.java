@@ -19,6 +19,8 @@ import com.kido.videopager.R;
  */
 public class ShadowLayout extends FrameLayout {
 
+    private Context mContext;
+
     private int mShadowColor;
     private float mShadowRadius;
     private float mCornerRadius;
@@ -31,17 +33,16 @@ public class ShadowLayout extends FrameLayout {
     private static final int DEFAULT_SHADOW_COLOR = 0x2a000000;
 
     public ShadowLayout(Context context) {
-        super(context);
-        initView(context, null);
+        this(context, null);
     }
 
     public ShadowLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initView(context, attrs);
+        super(context, attrs, 0);
     }
 
     public ShadowLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.mContext = context;
         initView(context, attrs);
     }
 
@@ -85,7 +86,10 @@ public class ShadowLayout extends FrameLayout {
 
     private void initView(Context context, AttributeSet attrs) {
         initAttributes(context, attrs);
+        adjustPadding();
+    }
 
+    private void adjustPadding() {
         int xPadding = (int) (mShadowRadius + Math.abs(mDx));
         int yPadding = (int) (mShadowRadius + Math.abs(mDy));
         setPadding(xPadding, yPadding, xPadding, yPadding);
@@ -104,6 +108,9 @@ public class ShadowLayout extends FrameLayout {
 
 
     private void initAttributes(Context context, AttributeSet attrs) {
+        if (attrs == null) {
+            return;
+        }
         TypedArray attr = getTypedArray(context, attrs, R.styleable.ShadowLayout);
         if (attr == null) {
             return;
@@ -165,5 +172,37 @@ public class ShadowLayout extends FrameLayout {
 
         return output;
     }
+
+    protected int dp2px(float dp) {
+        final float scale = mContext.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
+    }
+
+    /**
+     * @param radius dp
+     */
+    public void setCornerRadius(float radius) {
+        mCornerRadius = dp2px(radius);
+    }
+
+    /**
+     * @param radius dp
+     * @param deltaX dp
+     * @param deltaY dp
+     */
+    public void setShadowRadius(float radius, float deltaX, float deltaY) {
+        mShadowRadius = dp2px(radius);
+        mDx = deltaX;
+        mDy = deltaY;
+        adjustPadding();
+    }
+
+    /**
+     * @param color color色值
+     */
+    public void setShadowColor(int color) {
+        mShadowColor = color;
+    }
+
 
 }
