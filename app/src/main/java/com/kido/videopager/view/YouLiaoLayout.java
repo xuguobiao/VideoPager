@@ -1,12 +1,12 @@
-package com.kido.videopager.fragment;
+package com.kido.videopager.view;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.kido.videopager.R;
 import com.kido.videopager.VideoData;
@@ -18,35 +18,36 @@ import java.util.List;
 
 /**
  * @author Kido
- * @email everlastxgb@gmail.com
- * @create_time 17/6/11 23:27
  */
 
-public class YLFragment extends Fragment {
+public class YouLiaoLayout extends FrameLayout {
 
-    private CoverFlowLayout mCoverFlowLayout;
-    private List<VideoData> mVideDatas;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public YouLiaoLayout(Context context) {
+        this(context, null);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_yl, null);
-        bindViews(v);
-        return v;
+    public YouLiaoLayout(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public YouLiaoLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context);
+    }
+
+    private void init(Context context) {
+        LayoutInflater.from(context).inflate(R.layout.layout_youliao, this, true);
+        bindViews(this);
     }
 
 
     private void bindViews(View view) {
-        mCoverFlowLayout = (CoverFlowLayout) view.findViewById(R.id.cover_flow_layout);
+        CoverFlowLayout mCoverFlowLayout = (CoverFlowLayout) view.findViewById(R.id.cover_flow_layout);
 //        mCoverFlowLayout.setOverlapEnabled(true);
 
         final ViewPager pager = mCoverFlowLayout.getViewPager();
 
-        mVideDatas = loadData();
+        List<VideoData> mVideDatas = loadData();
         PagerAdapter adapter = new VideoPagerAdapter(view.getContext(), mVideDatas);
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(adapter.getCount());
@@ -62,13 +63,13 @@ public class YLFragment extends Fragment {
 
     }
 
+
     public static final int[] VIDEO_THUMBS = {R.drawable.image_hor_1, R.drawable.image_ver_1, R.drawable.image_hor_2, R.drawable.image_hor_3,
             R.drawable.image_hor_4, R.drawable.image_ver_2, R.drawable.image_ver_3, R.drawable.image_ver_4};
 
     public static final String[] VIDEO_WIDTH_HEIGHT = {"400x300", "300x400", "400x300", "400x300",
             "400x300", "300x400", "300x400", "300x400",
     };
-
 
     private List<VideoData> loadData() {
         List<VideoData> datas = new ArrayList<>();
@@ -83,4 +84,5 @@ public class YLFragment extends Fragment {
         }
         return datas;
     }
+
 }

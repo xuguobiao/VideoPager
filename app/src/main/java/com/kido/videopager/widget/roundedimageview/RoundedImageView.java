@@ -27,9 +27,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DimenRes;
-import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
@@ -241,7 +238,7 @@ public class RoundedImageView extends ImageView {
   }
 
   @Override
-  public void setImageResource(@DrawableRes int resId) {
+  public void setImageResource(int resId) {
     if (mResource != resId) {
       mResource = resId;
       mDrawable = resolveResource();
@@ -279,7 +276,7 @@ public class RoundedImageView extends ImageView {
   }
 
   @Override
-  public void setBackgroundResource(@DrawableRes int resId) {
+  public void setBackgroundResource(int resId) {
     if (mBackgroundResource != resId) {
       mBackgroundResource = resId;
       mBackgroundDrawable = resolveBackgroundResource();
@@ -343,7 +340,7 @@ public class RoundedImageView extends ImageView {
       if (mHasColorFilter) {
         mDrawable.setColorFilter(mColorFilter);
       }
-      // TODO: support, eventually...
+      // TODO: android.support, eventually...
       //mDrawable.setXfermode(mXfermode);
       //mDrawable.setAlpha(mAlpha * mViewAlphaScale >> 8);
     }
@@ -412,7 +409,7 @@ public class RoundedImageView extends ImageView {
    * @param corner the corner.
    * @return the radius.
    */
-  public float getCornerRadius(@Corner int corner) {
+  public float getCornerRadius(int corner) {
     return mCornerRadii[corner];
   }
 
@@ -421,7 +418,7 @@ public class RoundedImageView extends ImageView {
    *
    * @param resId dimension resource id of radii.
    */
-  public void setCornerRadiusDimen(@DimenRes int resId) {
+  public void setCornerRadiusDimen(int resId) {
     float radius = getResources().getDimension(resId);
     setCornerRadius(radius, radius, radius, radius);
   }
@@ -432,7 +429,7 @@ public class RoundedImageView extends ImageView {
    * @param corner the corner to set.
    * @param resId the dimension resource id of the corner radius.
    */
-  public void setCornerRadiusDimen(@Corner int corner, @DimenRes int resId) {
+  public void setCornerRadiusDimen(int corner, int resId) {
     setCornerRadius(corner, getResources().getDimensionPixelSize(resId));
   }
 
@@ -451,7 +448,7 @@ public class RoundedImageView extends ImageView {
    * @param corner the corner to set.
    * @param radius the corner radius to set in px.
    */
-  public void setCornerRadius(@Corner int corner, float radius) {
+  public void setCornerRadius(int corner, float radius) {
     if (mCornerRadii[corner] == radius) {
       return;
     }
@@ -493,7 +490,7 @@ public class RoundedImageView extends ImageView {
     return mBorderWidth;
   }
 
-  public void setBorderWidth(@DimenRes int resId) {
+  public void setBorderWidth(int resId) {
     setBorderWidth(getResources().getDimension(resId));
   }
 
@@ -506,12 +503,12 @@ public class RoundedImageView extends ImageView {
     invalidate();
   }
 
-  @ColorInt
+
   public int getBorderColor() {
     return mBorderColor.getDefaultColor();
   }
 
-  public void setBorderColor(@ColorInt int color) {
+  public void setBorderColor(int color) {
     setBorderColor(ColorStateList.valueOf(color));
   }
 

@@ -1,27 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.kido.videopager.widget.SlidingTabLayout
-        android:id="@+id/tabLayout"
+    <com.kido.videopager.view.YouLiaoLayout
+        android:id="@+id/youliao_layout"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/colorPrimary"
-        app:tl_indicator_color="#ffffff"
-        app:tl_indicator_corner_radius="1.5dp"
-        app:tl_indicator_height="3dp"
-        app:tl_indicator_width="10dp"
-        app:tl_textSelectColor="#ffffff"
-        app:tl_textUnselectColor="#aaffffff" />
-
-    <com.kido.videopager.widget.CustomViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-    </com.kido.videopager.widget.CustomViewPager>
+    </com.kido.videopager.view.YouLiaoLayout>
 
 </LinearLayout>
