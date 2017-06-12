@@ -5,6 +5,8 @@ import android.os.Build;
 import android.view.View;
 
 /**
+ * copy and then minify from support ViewCompat
+ *
  * @author Kido
  */
 
