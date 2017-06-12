@@ -37,7 +37,7 @@ public class ShadowLayout extends FrameLayout {
     }
 
     public ShadowLayout(Context context, AttributeSet attrs) {
-        super(context, attrs, 0);
+        this(context, attrs, 0);
     }
 
     public ShadowLayout(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -108,15 +108,12 @@ public class ShadowLayout extends FrameLayout {
 
 
     private void initAttributes(Context context, AttributeSet attrs) {
-        if (attrs == null) {
-            return;
-        }
-        TypedArray attr = getTypedArray(context, attrs, R.styleable.ShadowLayout);
-        if (attr == null) {
-            return;
-        }
 
+        TypedArray attr = getTypedArray(context, attrs, R.styleable.ShadowLayout);
         try {
+            if (attr == null) {
+                return;
+            }
             mCornerRadius = attr.getDimension(R.styleable.ShadowLayout_sl_cornerRadius, 0);
             mShadowRadius = attr.getDimension(R.styleable.ShadowLayout_sl_shadowRadius, 0);
             mDx = attr.getDimension(R.styleable.ShadowLayout_sl_dx, 0);
@@ -192,8 +189,8 @@ public class ShadowLayout extends FrameLayout {
      */
     public void setShadowRadius(float radius, float deltaX, float deltaY) {
         mShadowRadius = dp2px(radius);
-        mDx = deltaX;
-        mDy = deltaY;
+        mDx = dp2px(deltaX);
+        mDy = dp2px(deltaY);
         adjustPadding();
     }
 

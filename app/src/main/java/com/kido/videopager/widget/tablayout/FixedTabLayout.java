@@ -152,16 +152,17 @@ public class FixedTabLayout extends FrameLayout implements ValueAnimator.Animato
         obtainAttributes(context, attrs);
 
         //get layout_height
-        String height = attrs.getAttributeValue("http://schemas.android.com/apk/res/android", "layout_height");
+        if (attrs != null) {
+            String height = attrs.getAttributeValue("http://schemas.android.com/apk/res/android", "layout_height");
 
-        //create ViewPager
-        if (height.equals(ViewGroup.LayoutParams.MATCH_PARENT + "")) {
-        } else if (height.equals(ViewGroup.LayoutParams.WRAP_CONTENT + "")) {
-        } else {
-            int[] systemAttrs = {android.R.attr.layout_height};
-            TypedArray a = context.obtainStyledAttributes(attrs, systemAttrs);
-            mHeight = a.getDimensionPixelSize(0, ViewGroup.LayoutParams.WRAP_CONTENT);
-            a.recycle();
+            if (height.equals(ViewGroup.LayoutParams.MATCH_PARENT + "")) {
+            } else if (height.equals(ViewGroup.LayoutParams.WRAP_CONTENT + "")) {
+            } else {
+                int[] systemAttrs = {android.R.attr.layout_height};
+                TypedArray a = context.obtainStyledAttributes(attrs, systemAttrs);
+                mHeight = a.getDimensionPixelSize(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+                a.recycle();
+            }
         }
 
         mValueAnimator = ValueAnimator.ofObject(new PointEvaluator(), mLastP, mCurrentP);
@@ -953,17 +954,24 @@ public class FixedTabLayout extends FrameLayout implements ValueAnimator.Animato
                 }
                 margin = mIconMargin;
             }
-
+            int height = getInitializeHeight();
             if (mIconGravity == Gravity.TOP || mIconGravity == Gravity.BOTTOM) {
                 lp.leftMargin = dp2px(leftPadding);
-                lp.topMargin = mHeight > 0 ? (int) (mHeight - textHeight - iconH - margin) / 2 - dp2px(bottomPadding) : dp2px(bottomPadding);
+                lp.topMargin = height > 0 ? (int) (height - textHeight - iconH - margin) / 2 - dp2px(bottomPadding) : dp2px(bottomPadding);
             } else {
                 lp.leftMargin = dp2px(leftPadding);
-                lp.topMargin = mHeight > 0 ? (int) (mHeight - Math.max(textHeight, iconH)) / 2 - dp2px(bottomPadding) : dp2px(bottomPadding);
+                lp.topMargin = height > 0 ? (int) (height - Math.max(textHeight, iconH)) / 2 - dp2px(bottomPadding) : dp2px(bottomPadding);
             }
 
             tipView.setLayoutParams(lp);
         }
+    }
+
+    private int getInitializeHeight() {
+        if (mHeight <= 0 && getLayoutParams().height != ViewGroup.LayoutParams.MATCH_PARENT && getLayoutParams().height != ViewGroup.LayoutParams.WRAP_CONTENT) {
+            mHeight = getLayoutParams().height; // 兼容没有通过xml设置layout_height的情况
+        }
+        return mHeight;
     }
 
     /**

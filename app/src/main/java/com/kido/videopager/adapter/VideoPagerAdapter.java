@@ -1,16 +1,20 @@
 package com.kido.videopager.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import com.kido.videopager.R;
 import com.kido.videopager.VideoData;
+import com.kido.videopager.utils.Utils;
 import com.kido.videopager.widget.ShadowLayout;
 import com.kido.videopager.widget.coverflow.CoverFlowLayout;
 import com.kido.videopager.widget.roundedimageview.RoundedImageView;
@@ -36,38 +40,14 @@ public class VideoPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         VideoData data = datas.get(position);
-//        int layoutId = data.height >= data.width ? R.layout.item_page : R.layout.item_page_hor;
-        int layoutId = R.layout.item_page;
-        View view = mInflater.inflate(layoutId, null);
+        ViewHolder holder = createView(position);
 
-        ViewHolder holder = new ViewHolder(view);
-        adjustLayout(holder, position);
+        holder.itemView.setTag(holder);
+        container.addView(holder.itemView);
 
         holder.imageView.setImageResource(data.videoThumb);
-        holder.title.setText(data.title);
 
-        view.setTag(holder);
-
-        container.addView(view);
-        return view;
-    }
-
-    private void adjustLayout(ViewHolder holder, int position) { // 垂直和水平 两种布局有差异
-        VideoData data = datas.get(position);
-        if (data.height >= data.width) { // vertical
-            holder.imageView.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.bg_black_corner));
-            holder.imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            holder.imageView.setCornerRadius(0);
-
-            ((ShadowLayout.LayoutParams) holder.imageView.getLayoutParams()).height = mContext.getResources().getDimensionPixelSize(R.dimen.card_image_height_ver);
-            ((LinearLayout.LayoutParams) holder.imageLayout.getLayoutParams()).topMargin = mContext.getResources().getDimensionPixelSize(R.dimen.card_image_margin_top_ver);
-        } else { // horizontal
-            holder.imageView.setBackgroundDrawable(null);
-            holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            holder.imageView.setCornerRadius(mContext.getResources().getDimensionPixelSize(R.dimen.card_corner_radius));
-            ((ShadowLayout.LayoutParams) holder.imageView.getLayoutParams()).height = mContext.getResources().getDimensionPixelSize(R.dimen.card_image_height_hor);
-            ((LinearLayout.LayoutParams) holder.imageLayout.getLayoutParams()).topMargin = mContext.getResources().getDimensionPixelSize(R.dimen.card_image_margin_top_hor);
-        }
+        return holder.itemView;
     }
 
     @Override
@@ -88,21 +68,125 @@ public class VideoPagerAdapter extends PagerAdapter {
     }
 
     public static class ViewHolder { // just for setTag
-
-        public View belowLayout;
+        public View itemView;
         public View imageLayout;
         public RoundedImageView imageView;
-        public TextView title;
+        public View belowLayout;
 
-        public ViewHolder(View view) {
-            belowLayout = view.findViewById(R.id.below_layout);
-            imageLayout = view.findViewById(R.id.image_layout);
-            imageView = (RoundedImageView) view.findViewById(R.id.imageView);
-            title = (TextView) view.findViewById(R.id.title);
+        public ViewHolder() {
+        }
 
-
+        public void reset() {
+            itemView = null;
+            imageLayout = null;
+            imageView = null;
+            belowLayout = null;
         }
     }
+
+    private ViewHolder createView(int pos) {
+
+        VideoData data = datas.get(pos);
+        boolean isVer = data.height >= data.width;
+
+
+        RelativeLayout rootRLayout = new RelativeLayout(mContext);
+        rootRLayout.setLayoutParams(new ViewPager.LayoutParams());
+
+        LinearLayout lLayout = new LinearLayout(mContext);
+        lLayout.setOrientation(LinearLayout.VERTICAL);
+        lLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+        RelativeLayout.LayoutParams lLayoutParams = new RelativeLayout.LayoutParams(Utils.dp2px(mContext, 300), ViewGroup.LayoutParams.WRAP_CONTENT);
+        lLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        lLayout.setLayoutParams(lLayoutParams);
+
+        // shadow image layout start
+        ShadowLayout shadowLayout = new ShadowLayout(mContext);
+        shadowLayout.setCornerRadius(mContext.getResources().getDimensionPixelSize(R.dimen.card_corner_radius));
+        shadowLayout.setShadowRadius(10, 0, 12);
+        shadowLayout.setShadowColor(Color.parseColor("#2a000000"));
+        LinearLayout.LayoutParams shadowLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        shadowLayoutParams.topMargin = isVer ? mContext.getResources().getDimensionPixelSize(R.dimen.card_image_margin_top_ver)
+                : mContext.getResources().getDimensionPixelSize(R.dimen.card_image_margin_top_hor);
+        shadowLayout.setLayoutParams(shadowLayoutParams);
+
+        RoundedImageView roundedImageView = new RoundedImageView(mContext);
+        roundedImageView.setBackgroundDrawable(isVer ? mContext.getResources().getDrawable(R.drawable.bg_black_corner) : null);
+        roundedImageView.setScaleType(isVer ? ImageView.ScaleType.FIT_CENTER : ImageView.ScaleType.CENTER_CROP);
+        roundedImageView.setCornerRadius(isVer ? 0 : mContext.getResources().getDimensionPixelSize(R.dimen.card_corner_radius));
+
+        ShadowLayout.LayoutParams roundedImageViewParams = new ShadowLayout.LayoutParams(Utils.dp2px(mContext, 280), Utils.dp2px(mContext, 280));
+        roundedImageViewParams.height = isVer ? mContext.getResources().getDimensionPixelSize(R.dimen.card_image_height_ver)
+                : mContext.getResources().getDimensionPixelSize(R.dimen.card_image_height_hor);
+        roundedImageView.setLayoutParams(roundedImageViewParams);
+
+        shadowLayout.addView(roundedImageView);
+        // shadow image layout end
+
+        View belowLayout = mInflater.inflate(R.layout.item_page_inner_below, null);
+
+        lLayout.addView(shadowLayout);
+        lLayout.addView(belowLayout);
+
+        rootRLayout.addView(lLayout);
+
+        ViewHolder holder = new ViewHolder();
+        holder.itemView = rootRLayout;
+        holder.imageLayout = shadowLayout;
+        holder.imageView = roundedImageView;
+        holder.belowLayout = belowLayout;
+
+        return holder;
+
+    }
+
+    /*
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+
+        <com.kido.videopager.widget.ShadowLayout
+            android:id="@+id/image_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:sl_cornerRadius="@dimen/card_corner_radius"
+            app:sl_dx="0dp"
+            app:sl_dy="12dp"
+            app:sl_shadowColor="#2a000000"
+            app:sl_shadowRadius="10dp">
+
+            <com.kido.videopager.widget.roundedimageview.RoundedImageView
+                android:id="@+id/imageView"
+                android:layout_width="280dp"
+                android:layout_height="280dp"
+                android:background="@drawable/bg_black_corner"
+                android:scaleType="fitCenter"
+                android:src="@drawable/image_ver_1"
+                app:riv_corner_radius="0dp" />
+
+        </com.kido.videopager.widget.ShadowLayout>
+
+        <include layout="@layout/item_page_inner_below" />
+    </LinearLayout>
+
+</RelativeLayout>
+
+     */
+
+
+    /*************************************/
 
     public static final float SCALE_MIN = 0.3f;
     public static final float SCALE_MAX = 1f;

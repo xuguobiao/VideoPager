@@ -22,6 +22,8 @@ import java.util.List;
 
 public class YouLiaoLayout extends FrameLayout {
 
+    private Context mContext;
+
     public YouLiaoLayout(Context context) {
         this(context, null);
     }
@@ -32,6 +34,7 @@ public class YouLiaoLayout extends FrameLayout {
 
     public YouLiaoLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.mContext = context;
         init(context);
     }
 
@@ -48,7 +51,7 @@ public class YouLiaoLayout extends FrameLayout {
         final ViewPager pager = mCoverFlowLayout.getViewPager();
 
         List<VideoData> mVideDatas = loadData();
-        PagerAdapter adapter = new VideoPagerAdapter(view.getContext(), mVideDatas);
+        PagerAdapter adapter = new VideoPagerAdapter(mContext, mVideDatas);
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(adapter.getCount());
 //        pager.setPageMargin();
